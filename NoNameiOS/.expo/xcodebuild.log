@@ -1,0 +1,120 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj -configuration Debug -scheme NoNameiOS -destination id=2A6D1189-11B2-4849-A7B4-BA77660CD089
+
+User defaults from command line:
+    IDEPackageSupportUseBuiltinSCM = YES
+
+Prepare packages
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'NoNameiOS' in project 'NoNameiOS' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+Build description signature: 79d4a82058b017329ad379952ec3dc46
+Build description path: /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/XCBuildData/79d4a82058b017329ad379952ec3dc46.xcbuilddata
+
+CreateBuildDirectory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj
+    builtin-create-build-directory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products
+
+CreateBuildDirectory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj
+    builtin-create-build-directory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.0.sdk /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator17.0-21A325-9f995cea1212cde75317d7d3cd2045e2.sdkstatcache
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.0.sdk -o /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator17.0-21A325-9f995cea1212cde75317d7d3cd2045e2.sdkstatcache
+
+CreateBuildDirectory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products/Debug-iphonesimulator
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj
+    builtin-create-build-directory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products/Debug-iphonesimulator
+
+CreateBuildDirectory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS.xcodeproj
+    builtin-create-build-directory /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator
+
+MkDir /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products/Debug-iphonesimulator/NoNameiOS.app (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    /bin/mkdir -p /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Products/Debug-iphonesimulator/NoNameiOS.app
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/DerivedSources/Entitlements.plist (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/DerivedSources/Entitlements.plist
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/DerivedSources/Entitlements-Simulated.plist (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/DerivedSources/Entitlements-Simulated.plist
+
+ProcessProductPackaging /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS/NoNameiOS.entitlements /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    
+    Entitlements:
+    
+    {
+    "com.apple.security.get-task-allow" = 1;
+}
+    
+    builtin-productPackagingUtility /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS/NoNameiOS.entitlements -entitlements -format xml -o /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent
+
+ProcessProductPackaging /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS/NoNameiOS.entitlements /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "FAKETEAMID.com.anonymous.NoNameiOS";
+}
+    
+    builtin-productPackagingUtility /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios/NoNameiOS/NoNameiOS.entitlements -entitlements -format xml -o /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent
+
+ProcessProductPackagingDER /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent.der (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    /usr/bin/derq query -f xml -i /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent -o /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app.xcent.der --raw
+
+ProcessProductPackagingDER /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent.der (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    /usr/bin/derq query -f xml -i /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent -o /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.app-Simulated.xcent.der --raw
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/all-product-headers.yaml (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/all-product-headers.yaml
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-own-target-headers.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-project-headers.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-project-headers.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-generated-files.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-generated-files.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-all-target-headers.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-all-non-framework-target-headers.hmap (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/NoNameiOS-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/Script-08A4A3CD28434E44B6B9DE2E.sh (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    write-file /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/Script-08A4A3CD28434E44B6B9DE2E.sh
+
+PhaseScriptExecution [CP]\ Check\ Pods\ Manifest.lock /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/Script-08A4A3CD28434E44B6B9DE2E.sh (in target 'NoNameiOS' from project 'NoNameiOS')
+    cd /Users/jakobstrozberg/Desktop/nonameshoppinglist/NoNameiOS/ios
+    /bin/sh -c /Users/jakobstrozberg/Library/Developer/Xcode/DerivedData/NoNameiOS-fqnrtwbxnteatigtzbgsxvztqtie/Build/Intermediates.noindex/NoNameiOS.build/Debug-iphonesimulator/NoNameiOS.build/Script-08A4A3CD28434E44B6B9DE2E.sh
+diff: /Podfile.lock: No such file or directory
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+
+note: Run script build phase 'Bundle React Native code and images' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'NoNameiOS' from project 'NoNameiOS')

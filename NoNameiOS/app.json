@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Shopping List",
+    "slug": "NoNameiOS",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFD500"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSExceptionDomains": {
+            "localhost": {
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
+      },
+      "bundleIdentifier": "com.anonymous.NoNameiOS"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFD500"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.NoNameiOS"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
