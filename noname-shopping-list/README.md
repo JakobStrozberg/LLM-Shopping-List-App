@@ -52,3 +52,30 @@ The app includes mock data to simulate:
 ## For iOS Integration
 
 This web app is designed to be embedded in a React Native WebView for the iOS app.
+
+## Setting up the Item Categorization Feature
+
+The shopping list now includes an AI-powered feature to automatically categorize items by store sections (dairy, produce, etc.) for a better shopping experience.
+
+### Configuration
+
+1. Create a `.env` file in the root of the `noname-shopping-list` directory:
+
+```bash
+touch .env
+```
+
+2. Add your OpenAI API key to the `.env` file:
+
+```
+REACT_APP_OPENAI_API_KEY=your_openai_api_key_here
+```
+
+3. Restart the development server for the changes to take effect.
+
+### How it works
+
+- When you add items to your shopping list, they will automatically be categorized using OpenAI's GPT-3.5
+- If no API key is provided, the app will fall back to a pattern-based categorization system
+- Toggle between categorized view and regular list view using the grid/list button in the header
+- Categories include: Produce, Dairy, Meat & Seafood, Bakery, Frozen, Pantry & Dry Goods, Snacks & Candy, Beverages, Health & Beauty, Household, Baby, Pet, and Other

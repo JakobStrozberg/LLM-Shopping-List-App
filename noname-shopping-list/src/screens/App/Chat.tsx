@@ -38,13 +38,15 @@ export const Chat: React.FC = () => {
   return (
     <div className="chat-screen">
       <div className="chat-header">
-        <h2>{currentFamily?.name} Chat</h2>
+        <h2 className="chat-title">{currentFamily?.name} Chat</h2>
       </div>
 
       <div className="messages-container">
         {familyMessages.length === 0 && (
           <div className="empty-state">
-            <p>No messages yet. Start the conversation!</p>
+            <div className="empty-icon">💬</div>
+            <p className="empty-title">No messages yet</p>
+            <p className="empty-subtitle">Start the conversation!</p>
           </div>
         )}
 
@@ -61,7 +63,7 @@ export const Chat: React.FC = () => {
                 <span className="message-author">{msg.userName}</span>
               )}
               <div className="message-bubble">
-                <p>{msg.message}</p>
+                <p className="message-text">{msg.message}</p>
               </div>
               <span className="message-time">{formatTime(msg.timestamp)}</span>
             </div>

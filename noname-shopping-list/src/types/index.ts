@@ -29,6 +29,7 @@ export interface ShoppingItem {
   createdAt: Date;
   updatedAt: Date;
   listId: string; // Adding list reference
+  category?: string; // Grocery category
 }
 
 export interface ShoppingList {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../../store';
-import { Trophy, Copy, Users, LogOut } from 'lucide-react';
+import { Trophy, Copy, Users, LogOut, TrendingUp, DollarSign } from 'lucide-react';
 
 export const Family: React.FC = () => {
   const { currentFamily, currentUser, mockUsers, logout } = useStore();
@@ -27,10 +27,10 @@ export const Family: React.FC = () => {
   return (
     <div className="family-screen">
       <div className="family-header">
-        <h2>{currentFamily?.name}</h2>
+        <h2 className="family-name">{currentFamily?.name}</h2>
         <div className="invite-section">
           <p className="invite-label">Invite Code</p>
-          <div className="invite-code-container">
+          <div className="invite-code-wrapper">
             <span className="invite-code">{currentFamily?.inviteCode}</span>
             <button onClick={copyInviteCode} className="copy-btn">
               <Copy size={16} />
@@ -40,16 +40,16 @@ export const Family: React.FC = () => {
       </div>
 
       <div className="points-card">
-        <Trophy size={40} className="trophy-icon" />
+        <div className="trophy-icon">🏆</div>
         <div className="points-info">
-          <h3>Family Points</h3>
+          <h3 className="points-label">Family Points</h3>
           <p className="points-value">{currentFamily?.totalPoints.toLocaleString()}</p>
           <p className="points-label">NoName Points earned together</p>
         </div>
       </div>
 
       <div className="members-section">
-        <h3>
+        <h3 className="members-header">
           <Users size={20} />
           Family Members ({familyMembers.length}/5)
         </h3>
@@ -69,21 +69,21 @@ export const Family: React.FC = () => {
         </div>
       </div>
 
-      <div className="family-stats">
+      <div className="stats-grid">
         <div className="stat-card">
-          <h4>This Week</h4>
-          <p className="stat-value">12</p>
-          <p className="stat-label">Items purchased</p>
+          <h4 className="stat-label">This Week</h4>
+          <div className="stat-value">12</div>
+          <p className="stat-unit">Items purchased</p>
         </div>
         <div className="stat-card">
-          <h4>Total Savings</h4>
-          <p className="stat-value">$45</p>
-          <p className="stat-label">Using NoName brand</p>
+          <h4 className="stat-label">Total Savings</h4>
+          <div className="stat-value">$45</div>
+          <p className="stat-unit">Using NoName brand</p>
         </div>
       </div>
 
       <div className="logout-section">
-        <button onClick={handleLogout} className="btn btn-logout">
+        <button onClick={handleLogout} className="btn-logout">
           <LogOut size={20} />
           Reset & Logout
         </button>

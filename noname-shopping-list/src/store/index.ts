@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User, Family, ShoppingItem, ChatMessage, ShoppingList, ItemComment } from '../types';
 import { v4 as uuidv4 } from 'uuid';
+import { CategorizationService } from '../services/categorization';
 
 interface AppState {
   // Auth
@@ -156,10 +157,13 @@ export const useStore = create<AppState>()(
       // Shopping Items
       shoppingItems: [],
       
-      addShoppingItem: (name, comment, image, quantity = 1) => {
+      addShoppingItem: async (name, comment, image, quantity = 1) => {
         const user = get().currentUser;
         const currentList = get().currentList;
         if (!user || !currentList) return;
+        
+        // Get category for the item
+        const category = await CategorizationService.categorizeItem(name);
         
         const newItem: ShoppingItem = {
           id: uuidv4(),
@@ -175,6 +179,7 @@ export const useStore = create<AppState>()(
           createdAt: new Date(),
           updatedAt: new Date(),
           listId: currentList.id,
+          category,
         };
         
         set((state) => ({
@@ -191,52 +196,59 @@ export const useStore = create<AppState>()(
           const randomUser = MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)];
           if (randomUser.id !== user.id) {
             const mockItems = ['Milk', 'Bread', 'Eggs', 'Cheese', 'Apples', 'Bananas'];
-            const mockItem: ShoppingItem = {
-              id: uuidv4(),
-              name: mockItems[Math.floor(Math.random() * mockItems.length)],
-              comment: Math.random() > 0.5 ? 'Get the organic one!' : undefined,
-              quantity: Math.floor(Math.random() * 3) + 1,
-              addedBy: randomUser.id,
-              addedByName: randomUser.name,
-              addedByAvatar: randomUser.avatar,
-              likedBy: Math.random() > 0.7 ? [MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)].id] : [],
-              checked: false,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-              listId: currentList.id,
-            };
-            set((state) => ({
-              shoppingItems: [...state.shoppingItems, mockItem],
-              shoppingLists: state.shoppingLists.map(list =>
-                list.id === currentList.id
-                  ? { ...list, itemCount: list.itemCount + 1 }
-                  : list
-              ),
-            }));
+            const mockItemName = mockItems[Math.floor(Math.random() * mockItems.length)];
             
-            // Sometimes add a comment from another user
-            if (Math.random() > 0.6) {
-              const commentUser = MOCK_USERS.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (MOCK_USERS.length - 1))];
-              const comments = [
-                "Don't forget to check the expiry date!",
-                "The brand on sale is just as good 👍",
-                "We already have some at home",
-                "Get 2, they're on special",
-                "Make sure it's the low-fat version"
-              ];
-              const mockComment: ItemComment = {
+            // Use async IIFE to handle async categorization
+            (async () => {
+              const mockCategory = await CategorizationService.categorizeItem(mockItemName);
+              const mockItem: ShoppingItem = {
                 id: uuidv4(),
-                itemId: mockItem.id,
-                userId: commentUser.id,
-                userName: commentUser.name,
-                userAvatar: commentUser.avatar,
-                text: comments[Math.floor(Math.random() * comments.length)],
-                timestamp: new Date(),
+                name: mockItemName,
+                comment: Math.random() > 0.5 ? 'Get the organic one!' : undefined,
+                quantity: Math.floor(Math.random() * 3) + 1,
+                addedBy: randomUser.id,
+                addedByName: randomUser.name,
+                addedByAvatar: randomUser.avatar,
+                likedBy: Math.random() > 0.7 ? [MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)].id] : [],
+                checked: false,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                listId: currentList.id,
+                category: mockCategory,
               };
               set((state) => ({
-                itemComments: [...state.itemComments, mockComment],
+                shoppingItems: [...state.shoppingItems, mockItem],
+                shoppingLists: state.shoppingLists.map(list =>
+                  list.id === currentList.id
+                    ? { ...list, itemCount: list.itemCount + 1 }
+                    : list
+                ),
               }));
-            }
+              
+              // Sometimes add a comment from another user
+              if (Math.random() > 0.6) {
+                const commentUser = MOCK_USERS.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (MOCK_USERS.length - 1))];
+                const comments = [
+                  "Don't forget to check the expiry date!",
+                  "The brand on sale is just as good 👍",
+                  "We already have some at home",
+                  "Get 2, they're on special",
+                  "Make sure it's the low-fat version"
+                ];
+                const mockComment: ItemComment = {
+                  id: uuidv4(),
+                  itemId: mockItem.id,
+                  userId: commentUser.id,
+                  userName: commentUser.name,
+                  userAvatar: commentUser.avatar,
+                  text: comments[Math.floor(Math.random() * comments.length)],
+                  timestamp: new Date(),
+                };
+                set((state) => ({
+                  itemComments: [...state.itemComments, mockComment],
+                }));
+              }
+            })();
           }
         }, Math.random() * 10000 + 5000);
       },
