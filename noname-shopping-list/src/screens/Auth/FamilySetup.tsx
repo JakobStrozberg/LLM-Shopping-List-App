@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
-import { Users, Plus, LogIn, UserPlus } from 'lucide-react';
+import { Users, Plus, LogIn, UserPlus, ArrowRight, Home, Sparkles, AlertCircle } from 'lucide-react';
 
 export const FamilySetup: React.FC = () => {
   const navigate = useNavigate();
@@ -10,31 +10,45 @@ export const FamilySetup: React.FC = () => {
   const [familyName, setFamilyName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleCreateFamily = (e: React.FormEvent) => {
+  const handleCreateFamily = async (e: React.FormEvent) => {
     e.preventDefault();
     if (familyName.trim()) {
-      createFamily(familyName);
-      navigate('/app/shopping');
+      setIsLoading(true);
+      // Simulate async operation
+      setTimeout(() => {
+        createFamily(familyName);
+        navigate('/app/shopping');
+      }, 1000);
     }
   };
 
-  const handleJoinFamily = (e: React.FormEvent) => {
+  const handleJoinFamily = async (e: React.FormEvent) => {
     e.preventDefault();
     if (inviteCode.trim()) {
-      const success = joinFamily(inviteCode.toUpperCase());
-      if (success) {
-        navigate('/app/shopping');
-      } else {
-        setError('Invalid invite code or family is full');
-      }
+      setIsLoading(true);
+      setError('');
+      
+      // Simulate async operation
+      setTimeout(() => {
+        const success = joinFamily(inviteCode.toUpperCase());
+        if (success) {
+          navigate('/app/shopping');
+        } else {
+          setError('Invalid invite code or family is full');
+          setIsLoading(false);
+        }
+      }, 1000);
     }
   };
 
   const handleQuickDemo = () => {
-    // Setup the demo family with pre-populated data
-    setupDemoFamily();
-    navigate('/app/shopping');
+    setIsLoading(true);
+    setTimeout(() => {
+      setupDemoFamily();
+      navigate('/app/shopping');
+    }, 800);
   };
 
   if (!currentUser) {
@@ -42,95 +56,206 @@ export const FamilySetup: React.FC = () => {
     return null;
   }
 
+  if (mode === 'choose') {
+    return (
+      <div className="family-setup-screen">
+        <div className="family-setup-hero">
+          <div className="setup-header">
+            <div className="welcome-badge">
+              <Sparkles size={16} />
+              <span>Welcome</span>
+            </div>
+            <h1 className="setup-title">
+              Hi {currentUser.name}! 👋
+            </h1>
+            <p className="setup-subtitle">
+              Let's connect you with your family to start shopping together and earning rewards.
+            </p>
+          </div>
+
+          <div className="setup-options">
+            <div className="option-card-modern" onClick={() => setMode('create')}>
+              <div className="option-icon-container">
+                <div className="option-icon create-icon">
+                  <Plus size={28} />
+                </div>
+              </div>
+              <div className="option-content">
+                <h3>Create a Family</h3>
+                <p>Start a new shopping group and invite up to 4 family members</p>
+                <div className="option-arrow">
+                  <ArrowRight size={20} />
+                </div>
+              </div>
+            </div>
+
+            <div className="option-card-modern" onClick={() => setMode('join')}>
+              <div className="option-icon-container">
+                <div className="option-icon join-icon">
+                  <UserPlus size={28} />
+                </div>
+              </div>
+              <div className="option-content">
+                <h3>Join a Family</h3>
+                <p>Enter an invite code from your family member</p>
+                <div className="option-arrow">
+                  <ArrowRight size={20} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="demo-section">
+            <div className="demo-divider">
+              <span>or</span>
+            </div>
+            <button
+              className="btn btn-demo-modern"
+              onClick={handleQuickDemo}
+              disabled={isLoading}
+            >
+              <Home size={20} />
+              <span>Try Quick Demo</span>
+              <span className="demo-badge">Join The Smiths</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="family-setup-screen">
-      <div className="header">
-        <h1>Welcome, {currentUser.name}!</h1>
-        <p>Let's get you connected with your family</p>
+      <div className="setup-form-header">
+        <button 
+          onClick={() => {
+            setMode('choose');
+            setError('');
+            setIsLoading(false);
+          }}
+          className="back-btn-setup"
+          disabled={isLoading}
+        >
+          ← Back
+        </button>
+        <h2>{mode === 'create' ? 'Create Your Family' : 'Join a Family'}</h2>
       </div>
 
-      {mode === 'choose' && (
-        <div className="options">
-          <button
-            className="option-card"
-            onClick={() => setMode('create')}
-          >
-            <Plus size={40} />
-            <h3>Create a Family</h3>
-            <p>Start a new shopping group</p>
-          </button>
+      <div className="setup-form-container">
+        {mode === 'create' && (
+          <div className="form-content">
+            <div className="form-icon-header">
+              <div className="form-icon create-icon">
+                <Plus size={32} />
+              </div>
+              <h3>Create Your Family Group</h3>
+              <p>Give your family group a name that everyone will recognize</p>
+            </div>
 
-          <button
-            className="option-card"
-            onClick={() => setMode('join')}
-          >
-            <LogIn size={40} />
-            <h3>Join a Family</h3>
-            <p>Enter an invite code</p>
-          </button>
+            <form onSubmit={handleCreateFamily} className="family-form-modern">
+              <div className="form-group">
+                <label htmlFor="familyName" className="form-label">
+                  Family Name
+                </label>
+                <input
+                  id="familyName"
+                  type="text"
+                  placeholder="e.g., The Smiths, Johnson Family"
+                  value={familyName}
+                  onChange={(e) => setFamilyName(e.target.value)}
+                  required
+                  className="input input-large"
+                  maxLength={30}
+                  disabled={isLoading}
+                />
+                <div className="form-hint">
+                  <Users size={14} />
+                  <span>Up to 5 members can join your family</span>
+                </div>
+              </div>
 
-          <button
-            className="btn btn-demo"
-            onClick={handleQuickDemo}
-          >
-            <Users size={20} />
-            Quick Demo (Join The Smiths)
-          </button>
-        </div>
-      )}
-
-      {mode === 'create' && (
-        <form onSubmit={handleCreateFamily} className="family-form">
-          <h2>Create Your Family</h2>
-          <input
-            type="text"
-            placeholder="Family Name"
-            value={familyName}
-            onChange={(e) => setFamilyName(e.target.value)}
-            required
-            className="input"
-            maxLength={30}
-          />
-          <p className="hint">Up to 5 members can join your family</p>
-          <div className="form-actions">
-            <button type="button" onClick={() => setMode('choose')} className="btn btn-secondary">
-              Back
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Create Family
-            </button>
+              <button 
+                type="submit" 
+                className="btn btn-primary btn-large"
+                disabled={isLoading || !familyName.trim()}
+              >
+                {isLoading ? (
+                  <>
+                    <div className="loading-spinner" />
+                    <span>Creating Family...</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus size={20} />
+                    <span>Create Family</span>
+                  </>
+                )}
+              </button>
+            </form>
           </div>
-        </form>
-      )}
+        )}
 
-      {mode === 'join' && (
-        <form onSubmit={handleJoinFamily} className="family-form">
-          <h2>Join a Family</h2>
-          <input
-            type="text"
-            placeholder="Invite Code"
-            value={inviteCode}
-            onChange={(e) => setInviteCode(e.target.value)}
-            required
-            className="input"
-            style={{ textTransform: 'uppercase' }}
-            maxLength={10}
-          />
-          {error && <p className="error">{error}</p>}
-          <p className="hint">Ask your family member for the invite code</p>
-          <div className="form-actions">
-            <button type="button" onClick={() => {
-              setMode('choose');
-              setError('');
-            }} className="btn btn-secondary">
-              Back
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Join Family
-            </button>
+        {mode === 'join' && (
+          <div className="form-content">
+            <div className="form-icon-header">
+              <div className="form-icon join-icon">
+                <UserPlus size={32} />
+              </div>
+              <h3>Join Your Family</h3>
+              <p>Enter the invite code shared by your family member</p>
+            </div>
+
+            <form onSubmit={handleJoinFamily} className="family-form-modern">
+              <div className="form-group">
+                <label htmlFor="inviteCode" className="form-label">
+                  Invite Code
+                </label>
+                <input
+                  id="inviteCode"
+                  type="text"
+                  placeholder="ABC123"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  required
+                  className="input input-large code-input"
+                  style={{ textTransform: 'uppercase' }}
+                  maxLength={10}
+                  disabled={isLoading}
+                />
+                <div className="form-hint">
+                  <LogIn size={14} />
+                  <span>Ask your family member for the 6-character code</span>
+                </div>
+              </div>
+
+              {error && (
+                <div className="error-message">
+                  <AlertCircle size={16} />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                className="btn btn-primary btn-large"
+                disabled={isLoading || !inviteCode.trim()}
+              >
+                {isLoading ? (
+                  <>
+                    <div className="loading-spinner" />
+                    <span>Joining Family...</span>
+                  </>
+                ) : (
+                  <>
+                    <UserPlus size={20} />
+                    <span>Join Family</span>
+                  </>
+                )}
+              </button>
+            </form>
           </div>
-        </form>
-      )}
+        )}
+      </div>
     </div>
   );
 }; 

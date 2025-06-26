@@ -31,10 +31,15 @@ const FAMILY_REWARDS: FamilyReward[] = [
 export const Family: React.FC = () => {
   const { currentFamily, currentUser, mockUsers, logout } = useStore();
 
-  const familyMembers = currentFamily?.members.map(memberId => 
-    mockUsers.find(user => user.id === memberId) || 
-    { id: memberId, name: 'Unknown', avatar: '👤', email: '' }
-  ) || [];
+  const familyMembers = currentFamily?.members.map(memberId => {
+    // Check if it's the current user first
+    if (memberId === currentUser?.id) {
+      return currentUser;
+    }
+    // Then check in mockUsers
+    return mockUsers.find(user => user.id === memberId) || 
+      { id: memberId, name: 'Unknown', avatar: '👤', email: '' };
+  }) || [];
 
   const copyInviteCode = () => {
     if (currentFamily?.inviteCode) {
