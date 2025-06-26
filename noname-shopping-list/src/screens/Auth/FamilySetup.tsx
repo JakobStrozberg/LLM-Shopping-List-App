@@ -5,7 +5,7 @@ import { Users, Plus, LogIn, UserPlus } from 'lucide-react';
 
 export const FamilySetup: React.FC = () => {
   const navigate = useNavigate();
-  const { createFamily, joinFamily, createShoppingList, currentUser } = useStore();
+  const { createFamily, joinFamily, setupDemoFamily, currentUser } = useStore();
   const [mode, setMode] = useState<'choose' | 'create' | 'join'>('choose');
   const [familyName, setFamilyName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
@@ -14,9 +14,7 @@ export const FamilySetup: React.FC = () => {
   const handleCreateFamily = (e: React.FormEvent) => {
     e.preventDefault();
     if (familyName.trim()) {
-      const family = createFamily(familyName);
-      // Create a default shopping list
-      createShoppingList('Groceries', '🛒', '#FFD500');
+      createFamily(familyName);
       navigate('/app/shopping');
     }
   };
@@ -26,8 +24,6 @@ export const FamilySetup: React.FC = () => {
     if (inviteCode.trim()) {
       const success = joinFamily(inviteCode.toUpperCase());
       if (success) {
-        // Create a default shopping list for the user
-        createShoppingList('Groceries', '🛒', '#FFD500');
         navigate('/app/shopping');
       } else {
         setError('Invalid invite code or family is full');
@@ -36,10 +32,8 @@ export const FamilySetup: React.FC = () => {
   };
 
   const handleQuickDemo = () => {
-    // Join the mock family for demo
-    joinFamily('SMITH123');
-    // Create a default shopping list for demo
-    createShoppingList('Groceries', '🛒', '#FFD500');
+    // Setup the demo family with pre-populated data
+    setupDemoFamily();
     navigate('/app/shopping');
   };
 

@@ -10,12 +10,17 @@ interface AppState {
   setCurrentUser: (user: User | null) => void;
   logout: () => void;
   
+  // Demo mode
+  isDemoMode: boolean;
+  setDemoMode: (isDemo: boolean) => void;
+  
   // Families
   families: Family[];
   currentFamily: Family | null;
   createFamily: (name: string) => Family;
   joinFamily: (inviteCode: string) => boolean;
   selectFamily: (familyId: string) => void;
+  setupDemoFamily: () => void;
   
   // Shopping Lists
   shoppingLists: ShoppingList[];
@@ -45,22 +50,146 @@ interface AppState {
   mockUsers: User[];
 }
 
-// Mock data for testing
-const MOCK_USERS: User[] = [
-  { id: '1', email: 'mom@family.com', name: 'Mom', avatar: '🐱', familyId: 'family1' },
-  { id: '2', email: 'dad@family.com', name: 'Dad', avatar: '🐶', familyId: 'family1' },
-  { id: '3', email: 'kid1@family.com', name: 'Sarah', avatar: '🦄', familyId: 'family1' },
-  { id: '4', email: 'kid2@family.com', name: 'Tom', avatar: '🐼', familyId: 'family1' },
+// Mock data for demo mode
+const DEMO_USERS: User[] = [
+  { id: 'demo-mom', email: 'mom@smithfamily.com', name: 'Mom Smith', avatar: '👩', familyId: 'demo-family' },
+  { id: 'demo-dad', email: 'dad@smithfamily.com', name: 'Dad Smith', avatar: '👨', familyId: 'demo-family' },
+  { id: 'demo-sarah', email: 'sarah@smithfamily.com', name: 'Sarah', avatar: '👧', familyId: 'demo-family' },
+  { id: 'demo-tom', email: 'tom@smithfamily.com', name: 'Tom', avatar: '👦', familyId: 'demo-family' },
 ];
 
-const MOCK_FAMILY: Family = {
-  id: 'family1',
+const DEMO_FAMILY: Family = {
+  id: 'demo-family',
   name: 'The Smiths',
-  members: ['1', '2', '3', '4'],
-  inviteCode: 'SMITH123',
+  members: ['demo-mom', 'demo-dad', 'demo-sarah', 'demo-tom'],
+  inviteCode: 'DEMO123',
   totalPoints: 2450,
   createdAt: new Date(),
 };
+
+// Demo shopping items
+const createDemoItems = (listId: string): ShoppingItem[] => [
+  {
+    id: 'demo-item-1',
+    name: 'Organic Milk',
+    comment: 'Get the 2% one',
+    quantity: 2,
+    addedBy: 'demo-mom',
+    addedByName: 'Mom Smith',
+    addedByAvatar: '👩',
+    likedBy: ['demo-dad'],
+    checked: false,
+    createdAt: new Date(Date.now() - 3600000),
+    updatedAt: new Date(Date.now() - 3600000),
+    listId,
+    category: 'Dairy',
+    tags: ['organic', 'dairy', '2%'],
+    points: 15,
+  },
+  {
+    id: 'demo-item-2',
+    name: 'Whole Wheat Bread',
+    comment: 'The one with seeds',
+    quantity: 1,
+    addedBy: 'demo-dad',
+    addedByName: 'Dad Smith',
+    addedByAvatar: '👨',
+    likedBy: ['demo-mom', 'demo-sarah'],
+    checked: true,
+    createdAt: new Date(Date.now() - 7200000),
+    updatedAt: new Date(Date.now() - 1800000),
+    listId,
+    category: 'Bakery',
+    tags: ['bread', 'whole wheat', 'seeds'],
+    points: 10,
+  },
+  {
+    id: 'demo-item-3',
+    name: 'Bananas',
+    quantity: 6,
+    addedBy: 'demo-sarah',
+    addedByName: 'Sarah',
+    addedByAvatar: '👧',
+    likedBy: ['demo-tom'],
+    checked: false,
+    createdAt: new Date(Date.now() - 1800000),
+    updatedAt: new Date(Date.now() - 1800000),
+    listId,
+    category: 'Produce',
+    tags: ['fruit', 'bananas'],
+    points: 8,
+  },
+  {
+    id: 'demo-item-4',
+    name: 'Chicken Breast',
+    comment: 'For dinner tonight',
+    quantity: 2,
+    addedBy: 'demo-mom',
+    addedByName: 'Mom Smith',
+    addedByAvatar: '👩',
+    likedBy: [],
+    checked: false,
+    createdAt: new Date(Date.now() - 900000),
+    updatedAt: new Date(Date.now() - 900000),
+    listId,
+    category: 'Meat',
+    tags: ['chicken', 'protein', 'dinner'],
+    points: 25,
+  },
+];
+
+// Demo comments
+const createDemoComments = (): ItemComment[] => [
+  {
+    id: 'demo-comment-1',
+    itemId: 'demo-item-1',
+    userId: 'demo-dad',
+    userName: 'Dad Smith',
+    userAvatar: '👨',
+    text: 'Make sure it\'s not expired!',
+    timestamp: new Date(Date.now() - 3000000),
+  },
+  {
+    id: 'demo-comment-2',
+    itemId: 'demo-item-4',
+    userId: 'demo-sarah',
+    userName: 'Sarah',
+    userAvatar: '👧',
+    text: 'Can we get the organic kind?',
+    timestamp: new Date(Date.now() - 600000),
+  },
+];
+
+// Demo chat messages
+const DEMO_CHAT_MESSAGES: ChatMessage[] = [
+  {
+    id: 'demo-chat-1',
+    familyId: 'demo-family',
+    userId: 'demo-mom',
+    userName: 'Mom Smith',
+    userAvatar: '👩',
+    message: 'Hey everyone, I\'m heading to the store now!',
+    timestamp: new Date(Date.now() - 1800000),
+  },
+  {
+    id: 'demo-chat-2',
+    familyId: 'demo-family',
+    userId: 'demo-dad',
+    userName: 'Dad Smith',
+    userAvatar: '👨',
+    message: 'Great! Don\'t forget the items on the list',
+    timestamp: new Date(Date.now() - 1700000),
+  },
+  {
+    id: 'demo-chat-3',
+    familyId: 'demo-family',
+    userId: 'demo-sarah',
+    userName: 'Sarah',
+    userAvatar: '👧',
+    message: 'Can you grab some ice cream too? 🍦',
+    timestamp: new Date(Date.now() - 1600000),
+  },
+];
 
 export const useStore = create<AppState>()(
   persist(
@@ -74,11 +203,16 @@ export const useStore = create<AppState>()(
         currentList: null,
         shoppingItems: [],
         chatMessages: [],
-        itemComments: []
+        itemComments: [],
+        isDemoMode: false,
       }),
       
+      // Demo mode
+      isDemoMode: false,
+      setDemoMode: (isDemo) => set({ isDemoMode: isDemo }),
+      
       // Families
-      families: [MOCK_FAMILY],
+      families: [],
       currentFamily: null,
       
       createFamily: (name) => {
@@ -94,6 +228,27 @@ export const useStore = create<AppState>()(
           families: [...state.families, newFamily],
           currentFamily: newFamily,
         }));
+        
+        // Create a default shopping list for the new family
+        const user = get().currentUser;
+        if (user) {
+          const defaultList: ShoppingList = {
+            id: uuidv4(),
+            name: 'Groceries',
+            familyId: newFamily.id,
+            color: '#FFD500',
+            icon: '🛒',
+            createdBy: user.id,
+            createdAt: new Date(),
+            itemCount: 0,
+          };
+          
+          set((state) => ({
+            shoppingLists: [...state.shoppingLists, defaultList],
+            currentList: defaultList,
+          }));
+        }
+        
         return newFamily;
       },
       
@@ -104,10 +259,78 @@ export const useStore = create<AppState>()(
           if (currentUserId && !family.members.includes(currentUserId)) {
             family.members.push(currentUserId);
             set({ currentFamily: family });
+            
+            // Create a default shopping list if none exists for this family
+            const existingList = get().shoppingLists.find(l => l.familyId === family.id);
+            if (!existingList) {
+              const defaultList: ShoppingList = {
+                id: uuidv4(),
+                name: 'Groceries',
+                familyId: family.id,
+                color: '#FFD500',
+                icon: '🛒',
+                createdBy: currentUserId,
+                createdAt: new Date(),
+                itemCount: 0,
+              };
+              
+              set((state) => ({
+                shoppingLists: [...state.shoppingLists, defaultList],
+                currentList: defaultList,
+              }));
+            } else {
+              set({ currentList: existingList });
+            }
+            
             return true;
           }
         }
         return false;
+      },
+      
+      setupDemoFamily: () => {
+        const user = get().currentUser;
+        if (!user) return;
+        
+        // Create demo family if it doesn't exist
+        let demoFamily = get().families.find(f => f.id === 'demo-family');
+        if (!demoFamily) {
+          demoFamily = { ...DEMO_FAMILY };
+          set((state) => ({
+            families: [...state.families, demoFamily!],
+          }));
+        }
+        
+        // Add current user to demo family
+        if (!demoFamily.members.includes(user.id)) {
+          demoFamily.members.push(user.id);
+        }
+        
+        set({ 
+          currentFamily: demoFamily,
+          isDemoMode: true,
+        });
+        
+        // Create demo shopping list
+        const demoList: ShoppingList = {
+          id: 'demo-list',
+          name: 'Weekly Groceries',
+          familyId: 'demo-family',
+          color: '#FFD500',
+          icon: '🛒',
+          createdBy: 'demo-mom',
+          createdAt: new Date(Date.now() - 86400000),
+          itemCount: 4,
+        };
+        
+        set((state) => ({
+          shoppingLists: [demoList],
+          currentList: demoList,
+          shoppingItems: createDemoItems(demoList.id),
+          itemComments: createDemoComments(),
+          chatMessages: DEMO_CHAT_MESSAGES,
+          mockUsers: DEMO_USERS,
+        }));
       },
       
       selectFamily: (familyId) => {
@@ -212,9 +435,10 @@ export const useStore = create<AppState>()(
           ),
         }));
         
-        // Simulate other users adding items occasionally
-        setTimeout(() => {
-          const randomUser = MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)];
+        // Simulate other users adding items occasionally (only in demo mode)
+        if (get().isDemoMode && get().mockUsers.length > 0) {
+          setTimeout(() => {
+            const randomUser = get().mockUsers[Math.floor(Math.random() * get().mockUsers.length)];
           if (randomUser.id !== user.id) {
             const mockItems = ['Milk', 'Bread', 'Eggs', 'Cheese', 'Apples', 'Bananas'];
             const mockItemName = mockItems[Math.floor(Math.random() * mockItems.length)];
@@ -234,7 +458,7 @@ export const useStore = create<AppState>()(
                 addedBy: randomUser.id,
                 addedByName: randomUser.name,
                 addedByAvatar: randomUser.avatar,
-                likedBy: Math.random() > 0.7 ? [MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)].id] : [],
+                likedBy: Math.random() > 0.7 ? [get().mockUsers[Math.floor(Math.random() * get().mockUsers.length)].id] : [],
                 checked: false,
                 createdAt: new Date(),
                 updatedAt: new Date(),
@@ -253,7 +477,7 @@ export const useStore = create<AppState>()(
               
               // Sometimes add a comment from another user
               if (Math.random() > 0.6) {
-                const commentUser = MOCK_USERS.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (MOCK_USERS.length - 1))];
+                const commentUser = get().mockUsers.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (get().mockUsers.length - 1))];
                 const comments = [
                   "Don't forget to check the expiry date!",
                   "The brand on sale is just as good 👍",
@@ -277,6 +501,7 @@ export const useStore = create<AppState>()(
             })();
           }
         }, Math.random() * 10000 + 5000);
+        }
       },
       
       updateItemQuantity: (itemId, quantity) => {
@@ -371,33 +596,38 @@ export const useStore = create<AppState>()(
           chatMessages: [...state.chatMessages, newMessage],
         }));
         
-        // Simulate responses from other family members
-        setTimeout(() => {
-          const responses = [
-            "Sounds good!",
-            "I'll get that on my way home",
-            "Do we need anything else?",
-            "Got it! 👍",
-            "Thanks for adding that to the list!",
-          ];
-          const randomUser = MOCK_USERS.filter(u => u.id !== user.id)[Math.floor(Math.random() * (MOCK_USERS.length - 1))];
-          const responseMessage: ChatMessage = {
-            id: uuidv4(),
-            familyId: family.id,
-            userId: randomUser.id,
-            userName: randomUser.name,
-            userAvatar: randomUser.avatar,
-            message: responses[Math.floor(Math.random() * responses.length)],
-            timestamp: new Date(),
-          };
-          set((state) => ({
-            chatMessages: [...state.chatMessages, responseMessage],
-          }));
-        }, Math.random() * 3000 + 1000);
+        // Simulate responses from other family members (only in demo mode)
+        if (get().isDemoMode && get().mockUsers.length > 0) {
+          setTimeout(() => {
+            const responses = [
+              "Sounds good!",
+              "I'll get that on my way home",
+              "Do we need anything else?",
+              "Got it! 👍",
+              "Thanks for adding that to the list!",
+            ];
+            const otherUsers = get().mockUsers.filter(u => u.id !== user.id);
+            if (otherUsers.length > 0) {
+              const randomUser = otherUsers[Math.floor(Math.random() * otherUsers.length)];
+              const responseMessage: ChatMessage = {
+                id: uuidv4(),
+                familyId: family.id,
+                userId: randomUser.id,
+                userName: randomUser.name,
+                userAvatar: randomUser.avatar,
+                message: responses[Math.floor(Math.random() * responses.length)],
+                timestamp: new Date(),
+              };
+              set((state) => ({
+                chatMessages: [...state.chatMessages, responseMessage],
+              }));
+            }
+          }, Math.random() * 3000 + 1000);
+        }
       },
       
       // Mock users
-      mockUsers: MOCK_USERS,
+      mockUsers: [],
     }),
     {
       name: 'noname-shopping-storage',
