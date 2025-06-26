@@ -1645,3 +1645,195 @@ body {
     font-size: 16px;
   }
 }
+
+/* Social Features - Likes and Comments */
+.social-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 12px;
+}
+
+.btn-like,
+.btn-comment {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dark-gray);
+  transition: all 0.2s;
+  border-radius: 8px;
+}
+
+.btn-like:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff0000;
+}
+
+.btn-comment:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-black);
+}
+
+.btn-like.liked {
+  color: #ff0000;
+}
+
+.btn-like.liked svg {
+  fill: #ff0000;
+}
+
+.btn-like span,
+.btn-comment span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.comments-section {
+  width: 100%;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  grid-column: 1 / -1;
+}
+
+.comments-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.comment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.comment:last-child {
+  margin-bottom: 0;
+}
+
+.comment-avatar {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.comment-content {
+  flex: 1;
+  background-color: var(--light-gray);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.comment-text {
+  font-size: 14px;
+  color: var(--dark-gray);
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.comment-input-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 24px;
+  font-size: 14px;
+  background-color: var(--white);
+  transition: all 0.2s;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: var(--primary-yellow);
+}
+
+.btn-send-comment {
+  background-color: var(--primary-yellow);
+  border: 2px solid var(--primary-black);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-send-comment:hover:not(:disabled) {
+  transform: scale(1.1);
+  background-color: var(--primary-black);
+  color: var(--primary-yellow);
+}
+
+.btn-send-comment:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-send-comment svg {
+  width: 18px;
+  height: 18px;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--dark-gray);
+  margin-top: 4px;
+}
+
+.added-by {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 480px) {
+  .shopping-list-screen.modern {
+    padding: 12px;
+  }
+  
+  .list-dropdown {
+    left: 12px;
+    right: 12px;
+  }
+  
+  .item-card.modern {
+    padding: 12px;
+  }
+  
+  .item-thumbnail {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .item-info h4 {
+    font-size: 15px;
+  }
+  
+  .quantity-control.modern button {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+}

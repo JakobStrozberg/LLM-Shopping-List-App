@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { User, Family, ShoppingItem, ChatMessage, ShoppingList } from '../types';
+import { User, Family, ShoppingItem, ChatMessage, ShoppingList, ItemComment } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 interface AppState {
@@ -30,6 +30,11 @@ interface AppState {
   toggleItemCheck: (itemId: string) => void;
   toggleItemLike: (itemId: string) => void;
   deleteShoppingItem: (itemId: string) => void;
+  
+  // Item Comments
+  itemComments: ItemComment[];
+  addItemComment: (itemId: string, text: string) => void;
+  getItemComments: (itemId: string) => ItemComment[];
   
   // Chat
   chatMessages: ChatMessage[];
@@ -67,7 +72,8 @@ export const useStore = create<AppState>()(
         currentFamily: null,
         currentList: null,
         shoppingItems: [],
-        chatMessages: [] 
+        chatMessages: [],
+        itemComments: []
       }),
       
       // Families
@@ -193,7 +199,7 @@ export const useStore = create<AppState>()(
               addedBy: randomUser.id,
               addedByName: randomUser.name,
               addedByAvatar: randomUser.avatar,
-              likedBy: [],
+              likedBy: Math.random() > 0.7 ? [MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)].id] : [],
               checked: false,
               createdAt: new Date(),
               updatedAt: new Date(),
@@ -207,6 +213,30 @@ export const useStore = create<AppState>()(
                   : list
               ),
             }));
+            
+            // Sometimes add a comment from another user
+            if (Math.random() > 0.6) {
+              const commentUser = MOCK_USERS.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (MOCK_USERS.length - 1))];
+              const comments = [
+                "Don't forget to check the expiry date!",
+                "The brand on sale is just as good 👍",
+                "We already have some at home",
+                "Get 2, they're on special",
+                "Make sure it's the low-fat version"
+              ];
+              const mockComment: ItemComment = {
+                id: uuidv4(),
+                itemId: mockItem.id,
+                userId: commentUser.id,
+                userName: commentUser.name,
+                userAvatar: commentUser.avatar,
+                text: comments[Math.floor(Math.random() * comments.length)],
+                timestamp: new Date(),
+              };
+              set((state) => ({
+                itemComments: [...state.itemComments, mockComment],
+              }));
+            }
           }
         }, Math.random() * 10000 + 5000);
       },
@@ -257,6 +287,28 @@ export const useStore = create<AppState>()(
               : list
           ),
         }));
+      },
+      
+      // Item Comments
+      itemComments: [],
+      
+      addItemComment: (itemId, text) => {
+        const newComment: ItemComment = {
+          id: uuidv4(),
+          itemId,
+          text,
+          userId: get().currentUser?.id || '',
+          userName: get().currentUser?.name || '',
+          userAvatar: get().currentUser?.avatar || '',
+          timestamp: new Date(),
+        };
+        set((state) => ({
+          itemComments: [...state.itemComments, newComment],
+        }));
+      },
+      
+      getItemComments: (itemId) => {
+        return get().itemComments.filter(c => c.itemId === itemId);
       },
       
       // Chat

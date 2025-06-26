@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../store';
-import { Plus, Check, Trash2, ShoppingBag, ChevronDown, MoreVertical, Edit2 } from 'lucide-react';
+import { Plus, Check, Trash2, ShoppingBag, ChevronDown, MoreVertical, Edit2, Heart, MessageCircle, Send } from 'lucide-react';
 import { ProductSuggestion } from '../../components/ProductSuggestion';
 import { Product } from '../../types';
 
@@ -29,6 +29,10 @@ export const ShoppingList: React.FC = () => {
     deleteList,
     currentUser,
     currentFamily,
+    toggleItemLike,
+    addItemComment,
+    getItemComments,
+    itemComments,
   } = useStore();
   
   const [showAddItem, setShowAddItem] = useState(false);
@@ -36,6 +40,8 @@ export const ShoppingList: React.FC = () => {
   const [showCreateList, setShowCreateList] = useState(false);
   const [itemName, setItemName] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
+  const [commentTexts, setCommentTexts] = useState<{ [key: string]: string }>({});
   
   // New list creation state
   const [newListName, setNewListName] = useState('');
@@ -71,6 +77,28 @@ export const ShoppingList: React.FC = () => {
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
     setItemName(product.name);
+  };
+
+  const toggleComments = (itemId: string) => {
+    const newExpanded = new Set(expandedComments);
+    if (newExpanded.has(itemId)) {
+      newExpanded.delete(itemId);
+    } else {
+      newExpanded.add(itemId);
+    }
+    setExpandedComments(newExpanded);
+  };
+
+  const handleAddComment = (itemId: string) => {
+    const text = commentTexts[itemId];
+    if (text?.trim()) {
+      addItemComment(itemId, text.trim());
+      setCommentTexts({ ...commentTexts, [itemId]: '' });
+    }
+  };
+
+  const handleCommentTextChange = (itemId: string, text: string) => {
+    setCommentTexts({ ...commentTexts, [itemId]: text });
   };
 
   if (!currentList && familyLists.length === 0) {
@@ -276,6 +304,9 @@ export const ShoppingList: React.FC = () => {
               <div className="item-info">
                 <h4>{item.name}</h4>
                 <span className="item-quantity">Qty: {item.quantity}</span>
+                <div className="item-meta">
+                  <span className="added-by">{item.addedByAvatar} {item.addedByName}</span>
+                </div>
               </div>
             </div>
 
@@ -295,6 +326,26 @@ export const ShoppingList: React.FC = () => {
                 </button>
               </div>
               
+              <div className="social-actions">
+                <button
+                  className={`btn-like ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
+                  onClick={() => toggleItemLike(item.id)}
+                >
+                  <Heart size={18} />
+                  {item.likedBy.length > 0 && <span>{item.likedBy.length}</span>}
+                </button>
+                
+                <button
+                  className="btn-comment"
+                  onClick={() => toggleComments(item.id)}
+                >
+                  <MessageCircle size={18} />
+                  {getItemComments(item.id).length > 0 && (
+                    <span>{getItemComments(item.id).length}</span>
+                  )}
+                </button>
+              </div>
+              
               <button
                 className="btn-delete-item"
                 onClick={() => deleteShoppingItem(item.id)}
@@ -302,6 +353,43 @@ export const ShoppingList: React.FC = () => {
                 <Trash2 size={18} />
               </button>
             </div>
+            
+            {expandedComments.has(item.id) && (
+              <div className="comments-section">
+                <div className="comments-list">
+                  {getItemComments(item.id).map((comment) => (
+                    <div key={comment.id} className="comment">
+                      <span className="comment-avatar">{comment.userAvatar}</span>
+                      <div className="comment-content">
+                        <span className="comment-author">{comment.userName}</span>
+                        <p className="comment-text">{comment.text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="comment-input-container">
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    value={commentTexts[item.id] || ''}
+                    onChange={(e) => handleCommentTextChange(item.id, e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleAddComment(item.id);
+                      }
+                    }}
+                    className="comment-input"
+                  />
+                  <button
+                    className="btn-send-comment"
+                    onClick={() => handleAddComment(item.id)}
+                    disabled={!commentTexts[item.id]?.trim()}
+                  >
+                    <Send size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
 
@@ -324,15 +412,77 @@ export const ShoppingList: React.FC = () => {
                   <div className="item-info">
                     <h4>{item.name}</h4>
                     <span className="item-quantity">Qty: {item.quantity}</span>
+                    <div className="item-meta">
+                      <span className="added-by">{item.addedByAvatar} {item.addedByName}</span>
+                    </div>
                   </div>
                 </div>
 
-                <button
-                  className="btn-delete-item"
-                  onClick={() => deleteShoppingItem(item.id)}
-                >
-                  <Trash2 size={18} />
-                </button>
+                <div className="item-actions modern">
+                  <div className="social-actions">
+                    <button
+                      className={`btn-like ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
+                      onClick={() => toggleItemLike(item.id)}
+                    >
+                      <Heart size={18} />
+                      {item.likedBy.length > 0 && <span>{item.likedBy.length}</span>}
+                    </button>
+                    
+                    <button
+                      className="btn-comment"
+                      onClick={() => toggleComments(item.id)}
+                    >
+                      <MessageCircle size={18} />
+                      {getItemComments(item.id).length > 0 && (
+                        <span>{getItemComments(item.id).length}</span>
+                      )}
+                    </button>
+                  </div>
+                  
+                  <button
+                    className="btn-delete-item"
+                    onClick={() => deleteShoppingItem(item.id)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+                
+                {expandedComments.has(item.id) && (
+                  <div className="comments-section">
+                    <div className="comments-list">
+                      {getItemComments(item.id).map((comment) => (
+                        <div key={comment.id} className="comment">
+                          <span className="comment-avatar">{comment.userAvatar}</span>
+                          <div className="comment-content">
+                            <span className="comment-author">{comment.userName}</span>
+                            <p className="comment-text">{comment.text}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="comment-input-container">
+                      <input
+                        type="text"
+                        placeholder="Add a comment..."
+                        value={commentTexts[item.id] || ''}
+                        onChange={(e) => handleCommentTextChange(item.id, e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleAddComment(item.id);
+                          }
+                        }}
+                        className="comment-input"
+                      />
+                      <button
+                        className="btn-send-comment"
+                        onClick={() => handleAddComment(item.id)}
+                        disabled={!commentTexts[item.id]?.trim()}
+                      >
+                        <Send size={16} />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </>
