@@ -31,6 +31,7 @@ export interface ShoppingItem {
   listId: string; // Adding list reference
   category?: string; // Grocery category
   tags?: string[]; // AI-generated tags for the item
+  points?: number; // Points earned for this item
 }
 
 export interface ShoppingList {

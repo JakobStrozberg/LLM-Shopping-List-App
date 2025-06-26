@@ -371,14 +371,19 @@ export class TaggingService {
           messages: [
             {
               role: 'system',
-              content: `You are a grocery product tagging assistant. Generate 2-4 relevant tags for grocery products that help shoppers understand key characteristics.
+              content: `You are a grocery product tagging assistant. Generate 2-4 relevant and ACCURATE tags for grocery products that help shoppers understand key characteristics.
 
               Tags should be short (1-2 words) and focus on:
-              - Health aspects (Organic, Vegan, Gluten-Free, Low-Sodium, High-Protein, etc.)
+              - Health aspects (Organic, Low-Sodium, High-Protein, etc.)
               - Value proposition (Good Value, Premium, Budget-Friendly, etc.)
               - Convenience (Quick-Prep, Ready-to-Eat, Fresh, Frozen, etc.)
-              - Dietary features (Dairy-Free, Keto-Friendly, Low-Carb, High-Fiber, etc.)
+              - Dietary features ONLY when TRUE (Dairy-Free, Vegan, Gluten-Free, Keto-Friendly, Low-Carb, High-Fiber, etc.)
               - Quality indicators (Farm-Fresh, Artisan, Local, etc.)
+              
+              IMPORTANT: Only add dietary restriction tags like "Dairy-Free", "Vegan", "Gluten-Free" if the product genuinely meets those criteria.
+              - Milk, cheese, butter, yogurt are NOT dairy-free or vegan
+              - Meat, fish, poultry are NOT vegan
+              - Bread, pasta, flour typically contain gluten unless specifically labeled gluten-free
               
               Return only a JSON array of strings with the tags. Example: ["Organic", "Fresh", "High-Fiber"]`
             },
@@ -387,7 +392,7 @@ export class TaggingService {
               content: `Generate tags for this product: ${productInfo}`
             }
           ],
-          temperature: 0.3,
+          temperature: 0.2,
           max_tokens: 100
         })
       });
@@ -443,14 +448,19 @@ export class TaggingService {
           messages: [
             {
               role: 'system',
-              content: `You are a grocery product tagging assistant. Generate 2-4 relevant tags for each grocery product.
+              content: `You are a grocery product tagging assistant. Generate 2-4 relevant and ACCURATE tags for each grocery product.
 
               Tags should be short (1-2 words) and focus on:
-              - Health aspects (Organic, Vegan, Gluten-Free, Low-Sodium, High-Protein, etc.)
+              - Health aspects (Organic, Low-Sodium, High-Protein, etc.)
               - Value proposition (Good Value, Premium, Budget-Friendly, etc.)
               - Convenience (Quick-Prep, Ready-to-Eat, Fresh, Frozen, etc.)
-              - Dietary features (Dairy-Free, Keto-Friendly, Low-Carb, High-Fiber, etc.)
+              - Dietary features ONLY when TRUE (Dairy-Free, Vegan, Gluten-Free, Keto-Friendly, Low-Carb, High-Fiber, etc.)
               - Quality indicators (Farm-Fresh, Artisan, Local, etc.)
+              
+              IMPORTANT: Only add dietary restriction tags like "Dairy-Free", "Vegan", "Gluten-Free" if the product genuinely meets those criteria.
+              - Milk, cheese, butter, yogurt are NOT dairy-free or vegan
+              - Meat, fish, poultry are NOT vegan
+              - Bread, pasta, flour typically contain gluten unless specifically labeled gluten-free
               
               Return a JSON array of objects with "productName" and "tags" fields.
               Example: [{"productName": "Roma Tomatoes", "tags": ["Fresh", "Organic", "Low-Calorie"]}]`
@@ -460,7 +470,7 @@ export class TaggingService {
               content: `Generate tags for these products:\n${productList}`
             }
           ],
-          temperature: 0.3,
+          temperature: 0.2,
           max_tokens: 1000
         })
       });
@@ -503,21 +513,23 @@ export class TaggingService {
     }
 
     // Fresh produce tags
-    if (/tomato|lettuce|cucumber|pepper|onion|carrot|broccoli|spinach|kale|avocado|apple|banana|orange/i.test(name)) {
+    if (/tomato|lettuce|cucumber|pepper|onion|carrot|broccoli|spinach|kale|avocado|apple|banana|orange|fruit|vegetable/i.test(name)) {
       tags.push('Fresh');
       if (Math.random() > 0.5) tags.push('Organic'); // Randomly add organic for realism
     }
 
-    // Dairy products
+    // Dairy products (these are NOT dairy-free or vegan)
     if (/milk|cheese|yogurt|butter|cream/i.test(name)) {
       tags.push('Dairy');
-      if (name.includes('2%') || name.includes('low')) tags.push('Low-Fat');
+      if (name.includes('2%') || name.includes('low') || name.includes('skim')) tags.push('Low-Fat');
+      // Explicitly NOT adding dairy-free or vegan tags here
     }
 
-    // Meat products
-    if (/chicken|beef|pork|turkey|salmon|fish/i.test(name)) {
+    // Meat products (these are NOT vegan)
+    if (/chicken|beef|pork|turkey|salmon|fish|meat|bacon|ham|sausage/i.test(name)) {
       tags.push('High-Protein');
       if (desc.includes('lean') || name.includes('lean')) tags.push('Lean');
+      // Explicitly NOT adding vegan tags here
     }
 
     // Healthy options
@@ -530,17 +542,24 @@ export class TaggingService {
       tags.push('Quick-Prep');
     }
 
-    // Vegan-friendly items
-    if (/vegetable|fruit|rice|pasta|oil|vinegar|bean|lentil/i.test(name) && !/cheese|milk|meat|fish|chicken|beef/i.test(name)) {
+    // Vegan-friendly items (ONLY items that are actually vegan)
+    if (/^(vegetable|fruit|rice|pasta|oil|vinegar|bean|lentil|apple|banana|orange|tomato|lettuce|carrot|broccoli|spinach)$/i.test(name.trim()) && 
+        !/cheese|milk|meat|fish|chicken|beef|dairy|butter|cream|yogurt|bacon|ham|sausage|egg/i.test(name + desc)) {
       tags.push('Vegan');
     }
 
-    // Gluten-free items
-    if (/rice|potato|corn|fruit|vegetable|meat|fish|dairy/i.test(name) && !/bread|pasta|flour|wheat/i.test(name)) {
+    // Gluten-free items (only naturally gluten-free items)
+    if (/^(rice|potato|corn|apple|banana|orange|tomato|lettuce|carrot|meat|fish|chicken|beef|milk|cheese)$/i.test(name.trim()) && 
+        !/bread|pasta|flour|wheat|gluten|barley|rye/i.test(name + desc)) {
       if (Math.random() > 0.7) tags.push('Gluten-Free'); // Only sometimes for realism
     }
 
-    // Return 2-4 random tags if we have more
+    // Premium/Quality indicators
+    if (/organic|artisan|premium|gourmet|farm|local/i.test(name + desc)) {
+      tags.push('Premium');
+    }
+
+    // Return 2-4 tags
     if (tags.length > 4) {
       return tags.slice(0, 4);
     }
@@ -553,4 +572,27 @@ export class TaggingService {
 
     return tags;
   }
+}
+
+// Test function to verify tagging accuracy
+export async function testTagging() {
+  console.log('🧪 Testing improved tagging system...');
+  
+  const testProducts = [
+    'Milk 2%',
+    'Cheddar Cheese', 
+    'Ground Beef',
+    'Roma Tomatoes',
+    'White Bread',
+    'Olive Oil'
+  ];
+  
+  console.log('Testing products:', testProducts);
+  
+  for (const product of testProducts) {
+    const tags = await TaggingService.generateTags(product);
+    console.log(`${product}: [${tags.join(', ')}]`);
+  }
+  
+  console.log('✅ Tag testing complete!');
 } 

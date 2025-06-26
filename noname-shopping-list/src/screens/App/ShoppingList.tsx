@@ -3,7 +3,7 @@ import { useStore } from '../../store';
 import { 
   Plus, Check, X, ChevronDown, ChevronUp, Heart, 
   MessageCircle, Send, Minus, List, Grid3x3, 
-  ShoppingBag, Search 
+  Star 
 } from 'lucide-react';
 import { ProductSuggestion } from '../../components/ProductSuggestion';
 import { SmartSuggestions } from '../../components/SmartSuggestions';
@@ -49,6 +49,7 @@ export const ShoppingList: React.FC = () => {
   const [commentTexts, setCommentTexts] = useState<{ [key: string]: string }>({});
   const [sortByCategory, setSortByCategory] = useState(true);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(GROCERY_CATEGORIES));
+  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   
   // New list creation state
   const [newListName, setNewListName] = useState('');
@@ -75,7 +76,7 @@ export const ShoppingList: React.FC = () => {
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (itemName.trim() && currentList) {
-      await addShoppingItem(itemName, undefined, selectedProduct?.image);
+      await addShoppingItem(itemName, undefined, selectedProduct?.image, 1, selectedProduct?.points);
       setItemName('');
       setSelectedProduct(null);
       setShowAddItem(false);
@@ -99,7 +100,7 @@ export const ShoppingList: React.FC = () => {
 
   const handleSmartSuggestionSelect = async (product: Product) => {
     if (currentList) {
-      await addShoppingItem(product.name, undefined, product.image);
+      await addShoppingItem(product.name, undefined, product.image, 1, product.points);
     }
   };
 
@@ -119,6 +120,16 @@ export const ShoppingList: React.FC = () => {
       newExpanded.add(category);
     }
     setExpandedCategories(newExpanded);
+  };
+
+  const toggleComments = (itemId: string) => {
+    const newExpanded = new Set(expandedComments);
+    if (newExpanded.has(itemId)) {
+      newExpanded.delete(itemId);
+    } else {
+      newExpanded.add(itemId);
+    }
+    setExpandedComments(newExpanded);
   };
 
   if (!currentList && familyLists.length === 0) {
@@ -356,6 +367,9 @@ export const ShoppingList: React.FC = () => {
             <div className={`category-items ${expandedCategories.has(category) ? 'expanded' : 'collapsed'}`}>
               {items.map((item) => {
                 const comments = getItemComments(item.id);
+                const hasComments = comments.length > 0;
+                const showCommentInput = expandedComments.has(item.id);
+                
                 return (
                   <div key={item.id} className="shopping-item">
                     <div className="item-main">
@@ -391,14 +405,21 @@ export const ShoppingList: React.FC = () => {
                               className={`action-btn ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
                               onClick={() => toggleItemLike(item.id)}
                             >
-                              <Heart size={16} />
+                              <Heart size={14} />
                               {item.likedBy.length > 0 && <span className="like-count">{item.likedBy.length}</span>}
+                            </button>
+                            <button
+                              className={`action-btn comment-btn ${hasComments || showCommentInput ? 'active' : ''}`}
+                              onClick={() => toggleComments(item.id)}
+                            >
+                              <MessageCircle size={14} />
+                              {hasComments && <span className="comment-count">{comments.length}</span>}
                             </button>
                             <button
                               className="action-btn delete-btn"
                               onClick={() => deleteShoppingItem(item.id)}
                             >
-                              <X size={16} />
+                              <X size={14} />
                             </button>
                           </div>
                         </div>
@@ -406,33 +427,35 @@ export const ShoppingList: React.FC = () => {
                         <div className="item-meta">
                           <div className="added-by">
                             <span className="user-avatar">{item.addedByAvatar}</span>
-                            <span>Added by {item.addedBy}</span>
+                            <span>{item.addedByName}</span>
                           </div>
-                          {item.tags && <ProductTags tags={item.tags} size="small" maxTags={4} />}
+                          {item.points && (
+                            <div className="item-points">
+                              <Star size={10} />
+                              <span>{item.points * item.quantity} pts</span>
+                            </div>
+                          )}
                         </div>
+                        {item.tags && <ProductTags tags={item.tags} size="small" maxTags={2} />}
                         
-                        {/* Comments Section */}
-                        {(comments.length > 0 || true) && (
-                          <div className="comments-section">
-                            {comments.length > 0 && (
-                              <div className="comments-list">
+                        {/* Compact Comments Section */}
+                        {showCommentInput && (
+                          <div className="comments-section-compact">
+                            {hasComments && (
+                              <div className="comments-list-compact">
                                 {comments.map((comment) => (
-                                  <div key={comment.id} className="comment">
-                                    <span className="comment-avatar">{comment.userAvatar}</span>
-                                    <div className="comment-content">
-                                      <div className="comment-author">{comment.userName}</div>
-                                      <div className="comment-text">{comment.text}</div>
-                                    </div>
+                                  <div key={comment.id} className="comment-compact">
+                                    <span className="comment-avatar-small">{comment.userAvatar}</span>
+                                    <span className="comment-text-compact">{comment.text}</span>
                                   </div>
                                 ))}
                               </div>
                             )}
-                            
-                            <div className="comment-input-wrapper">
+                            <div className="comment-input-compact">
                               <input
                                 type="text"
-                                className="comment-input"
-                                placeholder="Add a comment..."
+                                className="comment-input-field"
+                                placeholder="Add comment..."
                                 value={commentTexts[item.id] || ''}
                                 onChange={(e) => setCommentTexts({ ...commentTexts, [item.id]: e.target.value })}
                                 onKeyPress={(e) => {
@@ -442,11 +465,11 @@ export const ShoppingList: React.FC = () => {
                                 }}
                               />
                               <button
-                                className="comment-send-btn"
+                                className="comment-send-btn-compact"
                                 onClick={() => handleAddComment(item.id)}
                                 disabled={!commentTexts[item.id]?.trim()}
                               >
-                                <Send size={14} />
+                                <Send size={12} />
                               </button>
                             </div>
                           </div>
@@ -462,6 +485,9 @@ export const ShoppingList: React.FC = () => {
 
         {!sortByCategory && uncheckedItems.map((item) => {
           const comments = getItemComments(item.id);
+          const hasComments = comments.length > 0;
+          const showCommentInput = expandedComments.has(item.id);
+          
           return (
             <div key={item.id} className="shopping-item">
               <div className="item-main">
@@ -497,14 +523,21 @@ export const ShoppingList: React.FC = () => {
                         className={`action-btn ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
                         onClick={() => toggleItemLike(item.id)}
                       >
-                        <Heart size={16} />
+                        <Heart size={14} />
                         {item.likedBy.length > 0 && <span className="like-count">{item.likedBy.length}</span>}
+                      </button>
+                      <button
+                        className={`action-btn comment-btn ${hasComments || showCommentInput ? 'active' : ''}`}
+                        onClick={() => toggleComments(item.id)}
+                      >
+                        <MessageCircle size={14} />
+                        {hasComments && <span className="comment-count">{comments.length}</span>}
                       </button>
                       <button
                         className="action-btn delete-btn"
                         onClick={() => deleteShoppingItem(item.id)}
                       >
-                        <X size={16} />
+                        <X size={14} />
                       </button>
                     </div>
                   </div>
@@ -512,33 +545,35 @@ export const ShoppingList: React.FC = () => {
                   <div className="item-meta">
                     <div className="added-by">
                       <span className="user-avatar">{item.addedByAvatar}</span>
-                      <span>Added by {item.addedBy}</span>
+                      <span>{item.addedByName}</span>
                     </div>
-                    {item.tags && <ProductTags tags={item.tags} size="small" maxTags={4} />}
+                    {item.points && (
+                      <div className="item-points">
+                        <Star size={10} />
+                        <span>{item.points * item.quantity} pts</span>
+                      </div>
+                    )}
                   </div>
+                  {item.tags && <ProductTags tags={item.tags} size="small" maxTags={2} />}
                   
-                  {/* Comments Section */}
-                  {(comments.length > 0 || true) && (
-                    <div className="comments-section">
-                      {comments.length > 0 && (
-                        <div className="comments-list">
+                  {/* Compact Comments Section */}
+                  {showCommentInput && (
+                    <div className="comments-section-compact">
+                      {hasComments && (
+                        <div className="comments-list-compact">
                           {comments.map((comment) => (
-                            <div key={comment.id} className="comment">
-                              <span className="comment-avatar">{comment.userAvatar}</span>
-                              <div className="comment-content">
-                                <div className="comment-author">{comment.userName}</div>
-                                <div className="comment-text">{comment.text}</div>
-                              </div>
+                            <div key={comment.id} className="comment-compact">
+                              <span className="comment-avatar-small">{comment.userAvatar}</span>
+                              <span className="comment-text-compact">{comment.text}</span>
                             </div>
                           ))}
                         </div>
                       )}
-                      
-                      <div className="comment-input-wrapper">
+                      <div className="comment-input-compact">
                         <input
                           type="text"
-                          className="comment-input"
-                          placeholder="Add a comment..."
+                          className="comment-input-field"
+                          placeholder="Add comment..."
                           value={commentTexts[item.id] || ''}
                           onChange={(e) => setCommentTexts({ ...commentTexts, [item.id]: e.target.value })}
                           onKeyPress={(e) => {
@@ -548,11 +583,11 @@ export const ShoppingList: React.FC = () => {
                           }}
                         />
                         <button
-                          className="comment-send-btn"
+                          className="comment-send-btn-compact"
                           onClick={() => handleAddComment(item.id)}
                           disabled={!commentTexts[item.id]?.trim()}
                         >
-                          <Send size={14} />
+                          <Send size={12} />
                         </button>
                       </div>
                     </div>
@@ -567,7 +602,6 @@ export const ShoppingList: React.FC = () => {
           <div className="completed-section">
             <div className="completed-header">Completed ({checkedItems.length})</div>
             {checkedItems.map((item) => {
-              const comments = getItemComments(item.id);
               return (
                 <div key={item.id} className="shopping-item checked">
                   <div className="item-main">
@@ -576,7 +610,7 @@ export const ShoppingList: React.FC = () => {
                         className="checkbox checked"
                         onClick={() => toggleItemCheck(item.id)}
                       >
-                        <Check size={16} />
+                        <Check size={14} />
                       </button>
                     </div>
                     
@@ -584,22 +618,14 @@ export const ShoppingList: React.FC = () => {
                       <div className="item-header">
                         <span className="item-name">{item.name}</span>
                         <div className="item-actions">
+                          <span className="quantity">×{item.quantity}</span>
                           <button
                             className="action-btn delete-btn"
                             onClick={() => deleteShoppingItem(item.id)}
                           >
-                            <X size={16} />
+                            <X size={14} />
                           </button>
                         </div>
-                      </div>
-                      
-                      <div className="item-meta">
-                        <span className="quantity">×{item.quantity}</span>
-                        <div className="added-by">
-                          <span className="user-avatar">{item.addedByAvatar}</span>
-                          <span>Added by {item.addedBy}</span>
-                        </div>
-                        {item.tags && <ProductTags tags={item.tags} size="small" maxTags={3} />}
                       </div>
                     </div>
                   </div>

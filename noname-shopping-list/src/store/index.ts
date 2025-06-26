@@ -26,7 +26,7 @@ interface AppState {
   
   // Shopping Items
   shoppingItems: ShoppingItem[];
-  addShoppingItem: (name: string, comment?: string, image?: string, quantity?: number) => void;
+  addShoppingItem: (name: string, comment?: string, image?: string, quantity?: number, points?: number) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   toggleItemCheck: (itemId: string) => void;
   toggleItemLike: (itemId: string) => void;
@@ -157,7 +157,7 @@ export const useStore = create<AppState>()(
       // Shopping Items
       shoppingItems: [],
       
-      addShoppingItem: async (name, comment, image, quantity = 1) => {
+      addShoppingItem: async (name, comment, image, quantity = 1, points) => {
         const user = get().currentUser;
         const currentList = get().currentList;
         if (!user || !currentList) return;
@@ -184,7 +184,24 @@ export const useStore = create<AppState>()(
           listId: currentList.id,
           category,
           tags,
+          points,
         };
+        
+        // Update family points if points are provided
+        const currentFamily = get().currentFamily;
+        if (points && currentFamily) {
+          const totalPointsToAdd = points * quantity;
+          set((state) => ({
+            families: state.families.map(family =>
+              family.id === currentFamily.id
+                ? { ...family, totalPoints: family.totalPoints + totalPointsToAdd }
+                : family
+            ),
+            currentFamily: state.currentFamily
+              ? { ...state.currentFamily, totalPoints: state.currentFamily.totalPoints + totalPointsToAdd }
+              : null
+          }));
+        }
         
         set((state) => ({
           shoppingItems: [...state.shoppingItems, newItem],

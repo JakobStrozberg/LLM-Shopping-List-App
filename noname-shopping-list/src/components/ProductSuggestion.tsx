@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../types';
-import { Search } from 'lucide-react';
+import { Search, Star } from 'lucide-react';
 import { searchProducts } from '../data/products';
 import { ProductTags } from './ProductTags';
 
@@ -122,9 +122,17 @@ export const ProductSuggestion: React.FC<ProductSuggestionProps> = ({
               <div className="product-info">
                 <div className="product-name">{product.name}</div>
                 <div className="product-description">{product.description}</div>
-                {product.brand && (
-                  <div className="product-brand">{product.brand}</div>
-                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  {product.brand && (
+                    <div className="product-brand">{product.brand}</div>
+                  )}
+                  {product.points && (
+                    <div className="product-points-badge">
+                      <Star size={12} />
+                      {product.points} pts
+                    </div>
+                  )}
+                </div>
                 {product.tags && <ProductTags tags={product.tags} size="small" maxTags={3} />}
               </div>
             </div>

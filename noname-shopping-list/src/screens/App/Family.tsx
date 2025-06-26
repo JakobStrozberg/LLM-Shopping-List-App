@@ -17,14 +17,14 @@ const FAMILY_REWARDS: FamilyReward[] = [
     name: 'Kitchen Knife Set',
     description: 'Professional 5-piece knife set',
     pointsRequired: 8000,
-    image: 'https://assets.shop.loblaws.ca/products/20070132001/b2/en/front/20070132001_front_a06_@2.png' // placeholder
+    image: '/knifeset.jpg'
   },
   {
     id: '3',
     name: 'Cookware Set',
     description: 'Non-stick 10-piece cookware',
     pointsRequired: 12000,
-    image: 'https://assets.shop.loblaws.ca/products/20143381001/b2/en/front/20143381001_front_a06_@2.png' // placeholder
+    image: '/cookwear.jpg'
   }
 ];
 

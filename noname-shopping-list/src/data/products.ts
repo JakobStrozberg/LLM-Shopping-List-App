@@ -2,16 +2,16 @@ import { Product } from '../types';
 
 export const GROCERY_PRODUCTS: Product[] = [
   // These are products with verified working images from the original CSV data
-  { id: '20143381001', name: 'Roma Tomatoes', description: 'Fresh Roma tomatoes, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20143381001/b2/en/front/20143381001_front_a06_@2.png', tags: ['Fresh', 'Vegan', 'Low-Calorie'] },
-  { id: '20070132001', name: 'English Cucumber', description: 'Fresh English cucumber, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20070132001/b2/en/front/20070132001_front_a06_@2.png', tags: ['Fresh', 'Hydrating', 'Low-Carb'] },
-  { id: '20107500001', name: 'Green Onion', description: 'Fresh green onion bunch', image: 'https://assets.shop.loblaws.ca/products/20107500001/b2/en/front/20107500001_front_a06_@2.png', tags: ['Fresh', 'Flavorful', 'Organic'] },
-  { id: '20145621001', name: 'Broccoli', description: 'Fresh broccoli crown, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20145621001/b2/en/front/20145621001_front_a06_@2.png', tags: ['Fresh', 'High-Fiber', 'Vitamin-Rich'] },
-  { id: '20007535001', name: 'Red Peppers', description: 'Fresh red bell peppers, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20007535001/b2/en/front/20007535001_front_a06_@2.png', tags: ['Fresh', 'Vitamin C', 'Colorful'] },
-  { id: '20811994001', name: 'Yellow Onions', description: 'Yellow onions, 3 lb bag', image: 'https://assets.shop.loblaws.ca/products/20811994001/b2/en/front/20811994001_front_a06_@2.png' },
-  { id: '20163119001', name: 'Celery Stalks', description: 'Fresh celery stalks, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20163119001/b2/en/front/20163119001_front_a06_@2.png' },
-  { id: '20135326001', name: 'Lettuce Iceberg', description: 'Fresh iceberg lettuce head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20135326001/b2/en/front/20135326001_front_a06_@2.png' },
-  { id: '20134101001', name: 'Red Onion', description: 'Fresh red onions, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20134101001/b2/en/front/20134101001_front_a06_@2.png' },
-  { id: '20135377001', name: 'Cauliflower', description: 'Fresh cauliflower head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20135377001/b2/en/front/20135377001_front_a06_@2.png' },
+  { id: '20143381001', name: 'Roma Tomatoes', description: 'Fresh Roma tomatoes, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20143381001/b2/en/front/20143381001_front_a06_@2.png', tags: ['Fresh', 'Vegan', 'Low-Calorie'], points: 25 },
+  { id: '20070132001', name: 'English Cucumber', description: 'Fresh English cucumber, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20070132001/b2/en/front/20070132001_front_a06_@2.png', tags: ['Fresh', 'Hydrating', 'Low-Carb'], points: 20 },
+  { id: '20107500001', name: 'Green Onion', description: 'Fresh green onion bunch', image: 'https://assets.shop.loblaws.ca/products/20107500001/b2/en/front/20107500001_front_a06_@2.png', tags: ['Fresh', 'Flavorful', 'Organic'], points: 15 },
+  { id: '20145621001', name: 'Broccoli', description: 'Fresh broccoli crown, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20145621001/b2/en/front/20145621001_front_a06_@2.png', tags: ['Fresh', 'High-Fiber', 'Vitamin-Rich'], points: 30 },
+  { id: '20007535001', name: 'Red Peppers', description: 'Fresh red bell peppers, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20007535001/b2/en/front/20007535001_front_a06_@2.png', tags: ['Fresh', 'Vitamin C', 'Colorful'], points: 25 },
+  { id: '20811994001', name: 'Yellow Onions', description: 'Yellow onions, 3 lb bag', image: 'https://assets.shop.loblaws.ca/products/20811994001/b2/en/front/20811994001_front_a06_@2.png', points: 35 },
+  { id: '20163119001', name: 'Celery Stalks', description: 'Fresh celery stalks, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20163119001/b2/en/front/20163119001_front_a06_@2.png', points: 20 },
+  { id: '20135326001', name: 'Lettuce Iceberg', description: 'Fresh iceberg lettuce head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20135326001/b2/en/front/20135326001_front_a06_@2.png', points: 25 },
+  { id: '20134101001', name: 'Red Onion', description: 'Fresh red onions, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20134101001/b2/en/front/20134101001_front_a06_@2.png', points: 20 },
+  { id: '20135377001', name: 'Cauliflower', description: 'Fresh cauliflower head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20135377001/b2/en/front/20135377001_front_a06_@2.png', points: 30 },
   { id: '20425893001', name: 'Sweet Green Peppers', description: 'Fresh green bell peppers, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20425893001/b2/en/front/20425893001_front_a06_@2.png' },
   { id: '20426596001', name: 'Zucchini', description: 'Fresh zucchini, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20426596001/b2/en/front/20426596001_front_a06_@2.png' },
   { id: '21004355001', name: 'Garlic Bulbs', description: 'Fresh garlic bulbs, 3-count pack', image: 'https://assets.shop.loblaws.ca/products/21004355001/b2/en/front/21004355001_front_a06_@2.png' },
@@ -24,11 +24,11 @@ export const GROCERY_PRODUCTS: Product[] = [
   { id: '20065036001', name: 'Romaine Lettuce', description: 'Fresh romaine lettuce head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20065036001/b2/en/front/20065036001_front_a06_@2.png' },
   
   // Products without images (but still searchable)
-  { id: 'milk-2', name: 'Milk 2%', description: 'Partly skimmed milk, 4L jug', brand: 'No Name', tags: ['Good Value', 'Low-Fat', 'Dairy'] },
-  { id: 'eggs', name: 'Large White Eggs', description: 'Large white eggs, 12 count', brand: 'No Name', tags: ['Good Value', 'High-Protein', 'Fresh'] },
-  { id: 'bread', name: 'White Bread', description: 'White sandwich bread, 675g loaf', brand: 'No Name', tags: ['Good Value', 'Pantry', 'Daily'] },
-  { id: 'butter', name: 'Butter', description: 'Salted butter, 454g', brand: 'No Name', tags: ['Good Value', 'Dairy', 'Cooking'] },
-  { id: 'cheese', name: 'Cheddar Cheese', description: 'Medium cheddar cheese, 400g block', brand: 'No Name', tags: ['Good Value', 'High-Protein', 'Dairy'] },
+  { id: 'milk-2', name: 'Milk 2%', description: 'Partly skimmed milk, 4L jug', brand: 'No Name', tags: ['Good Value', 'Low-Fat', 'Dairy'], points: 50 },
+  { id: 'eggs', name: 'Large White Eggs', description: 'Large white eggs, 12 count', brand: 'No Name', tags: ['Good Value', 'High-Protein', 'Fresh'], points: 45 },
+  { id: 'bread', name: 'White Bread', description: 'White sandwich bread, 675g loaf', brand: 'No Name', tags: ['Good Value', 'Pantry', 'Daily'], points: 40 },
+  { id: 'butter', name: 'Butter', description: 'Salted butter, 454g', brand: 'No Name', tags: ['Good Value', 'Dairy', 'Cooking'], points: 55 },
+  { id: 'cheese', name: 'Cheddar Cheese', description: 'Medium cheddar cheese, 400g block', brand: 'No Name', tags: ['Good Value', 'High-Protein', 'Dairy'], points: 60 },
   { id: 'chicken', name: 'Chicken Breast', description: 'Boneless skinless chicken breast, fresh', brand: 'No Name' },
   { id: 'beef', name: 'Ground Beef', description: 'Lean ground beef, fresh', brand: 'No Name' },
   { id: 'pasta', name: 'Spaghetti', description: 'Spaghetti pasta, 900g box', brand: 'No Name' },
@@ -110,5 +110,10 @@ export function searchProducts(query: string, limit: number = 8): Product[] {
       product.description.toLowerCase().includes(searchTerm) ||
       (product.brand && product.brand.toLowerCase().includes(searchTerm))
     )
+    .map(product => ({
+      ...product,
+      // Add default points based on brand if not specified
+      points: product.points || (product.brand === 'No Name' ? 50 : 25)
+    }))
     .slice(0, limit);
 } 

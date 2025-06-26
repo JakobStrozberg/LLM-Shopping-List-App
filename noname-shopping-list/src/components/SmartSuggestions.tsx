@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Brain, Plus, Sparkles, Lightbulb } from 'lucide-react';
+import { Brain, Plus, Sparkles, Lightbulb, RefreshCw } from 'lucide-react';
 import { ProductSuggestionService, ProductRecommendation } from '../services/categorization';
 import { Product } from '../types';
 import { ProductTags } from './ProductTags';
@@ -19,12 +19,14 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isManuallyCollapsed, setIsManuallyCollapsed] = useState(false);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   const loadRecommendations = useCallback(async () => {
     setIsLoadingRecommendations(true);
     try {
       const recs = await ProductSuggestionService.getRecommendations(currentItems, 5);
       setRecommendations(recs);
+      setHasLoadedOnce(true);
       if (recs.length > 0 && !isManuallyCollapsed) {
         setShowSuggestions(true);
       }
@@ -35,14 +37,14 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     }
   }, [currentItems, isManuallyCollapsed]);
 
+  // Only clear state when no items, never auto-load
   useEffect(() => {
-    if (currentItems.length > 0 && !isLoading) {
-      loadRecommendations();
-    } else {
+    if (currentItems.length === 0) {
       setRecommendations([]);
       setIsManuallyCollapsed(false);
+      setHasLoadedOnce(false);
     }
-  }, [currentItems, isLoading, loadRecommendations]);
+  }, [currentItems.length]);
 
   const handleAddProduct = (product: Product) => {
     onProductSelect(product);
@@ -54,6 +56,12 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     const newShowState = !showSuggestions;
     setShowSuggestions(newShowState);
     setIsManuallyCollapsed(!newShowState);
+  };
+
+  const handleManualRefresh = () => {
+    if (currentItems.length > 0) {
+      loadRecommendations();
+    }
   };
 
   const getConfidenceColor = (confidence: number) => {
@@ -90,13 +98,41 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     );
   }
 
-  if (recommendations.length === 0) {
+  if (recommendations.length === 0 && hasLoadedOnce) {
     return (
       <div className="smart-suggestions-empty">
         <div className="suggestion-icon">
           <Lightbulb size={24} color="#9E9E9E" />
         </div>
         <p className="suggestion-text">No suggestions available at the moment</p>
+        <button 
+          className="refresh-suggestions-btn"
+          onClick={handleManualRefresh}
+          disabled={isLoadingRecommendations}
+        >
+          <RefreshCw size={16} />
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  // Show refresh prompt if haven't loaded yet but have items
+  if (!hasLoadedOnce && currentItems.length > 0) {
+    return (
+      <div className="smart-suggestions-prompt">
+        <div className="suggestion-icon">
+          <Sparkles size={24} color="#4A90E2" />
+        </div>
+        <p className="suggestion-text">Get smart suggestions based on your items</p>
+        <button 
+          className="get-suggestions-btn"
+          onClick={handleManualRefresh}
+          disabled={isLoadingRecommendations}
+        >
+          <Brain size={16} />
+          Get Suggestions
+        </button>
       </div>
     );
   }
@@ -109,7 +145,20 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
           <h3 className="suggestions-title">Smart Suggestions</h3>
           <span className="suggestions-count">{recommendations.length}</span>
         </div>
-        <span className="toggle-indicator">{showSuggestions ? '−' : '+'}</span>
+        <div className="header-actions">
+          <button 
+            className="refresh-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleManualRefresh();
+            }}
+            disabled={isLoadingRecommendations}
+            title="Refresh suggestions"
+          >
+            <RefreshCw size={16} className={isLoadingRecommendations ? 'spin' : ''} />
+          </button>
+          <span className="toggle-indicator">{showSuggestions ? '−' : '+'}</span>
+        </div>
       </div>
 
       {showSuggestions && (
