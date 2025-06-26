@@ -1306,15 +1306,16 @@ body {
 
 /* Modern Items Container */
 .items-container.modern {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 0 20px 100px;
+}
+
+.item-wrapper {
+  margin-bottom: 8px;
 }
 
 .empty-state.modern {
   text-align: center;
   padding: 60px 20px;
-  color: var(--dark-gray);
 }
 
 .empty-state.modern p {
@@ -1331,13 +1332,14 @@ body {
 .item-card.modern {
   background-color: var(--white);
   border: 2px solid var(--primary-black);
-  border-radius: 16px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 12px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   transition: all 0.2s;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
 }
 
 .item-card.modern:hover {
@@ -1363,10 +1365,10 @@ body {
 }
 
 .checkbox.modern {
-  width: 28px;
-  height: 28px;
-  border: 3px solid var(--primary-black);
-  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--primary-black);
+  border-radius: 6px;
   background-color: var(--white);
   transition: all 0.2s;
 }
@@ -1379,15 +1381,15 @@ body {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
 }
 
 .item-thumbnail {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
@@ -1397,23 +1399,23 @@ body {
 }
 
 .item-info h4 {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .item-quantity {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--dark-gray);
 }
 
 .item-actions.modern {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -1428,10 +1430,10 @@ body {
 .quantity-control.modern button {
   background: none;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   transition: all 0.2s;
 }
@@ -1446,19 +1448,20 @@ body {
 }
 
 .quantity-control.modern span {
-  min-width: 32px;
+  min-width: 28px;
   text-align: center;
   font-weight: 600;
+  font-size: 14px;
 }
 
 .btn-delete-item {
   background: none;
   border: none;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
   color: var(--dark-gray);
   transition: all 0.2s;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .btn-delete-item:hover {
@@ -1627,22 +1630,22 @@ body {
   }
   
   .item-card.modern {
-    padding: 12px;
+    padding: 10px;
   }
   
   .item-thumbnail {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
   
   .item-info h4 {
-    font-size: 15px;
+    font-size: 14px;
   }
   
   .quantity-control.modern button {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
   }
 }
 
@@ -1650,8 +1653,8 @@ body {
 .social-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-right: 12px;
+  gap: 8px;
+  margin-right: 8px;
 }
 
 .btn-like,
@@ -1659,13 +1662,13 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   color: var(--dark-gray);
   transition: all 0.2s;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .btn-like:hover {
@@ -1688,16 +1691,18 @@ body {
 
 .btn-like span,
 .btn-comment span {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .comments-section {
-  width: 100%;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
-  grid-column: 1 / -1;
+  background-color: var(--white);
+  border: 2px solid var(--primary-black);
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: -2px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .comments-list {
@@ -1835,5 +1840,637 @@ body {
     width: 28px;
     height: 28px;
     font-size: 16px;
+  }
+}
+
+/* =================
+   COMPACT LIST REDESIGN
+   ================= */
+
+.shopping-list-compact {
+  height: 100%;
+  background-color: #f8f8f8;
+  padding: 8px;
+}
+
+/* Compact Header */
+.list-header-compact {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.list-selector-compact {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: white;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.list-selector-compact:hover {
+  background-color: #f5f5f5;
+}
+
+.list-icon-compact {
+  font-size: 18px;
+}
+
+.list-name-compact {
+  flex: 1;
+  text-align: left;
+}
+
+.list-selector-compact svg {
+  transition: transform 0.2s;
+}
+
+.list-selector-compact svg.rotated {
+  transform: rotate(180deg);
+}
+
+.btn-add-compact {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background: var(--primary-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-compact:hover {
+  transform: scale(1.05);
+}
+
+/* Dropdown */
+.list-dropdown-compact {
+  position: absolute;
+  top: 56px;
+  left: 8px;
+  right: 8px;
+  background: white;
+  border: 2px solid #000;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.list-option-compact {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  border-bottom: 1px solid #eee;
+}
+
+.list-option-compact:last-child {
+  border-bottom: none;
+}
+
+.list-option-compact:hover {
+  background-color: #f5f5f5;
+}
+
+.list-option-compact.active {
+  background-color: rgba(255, 213, 0, 0.2);
+}
+
+.list-icon-mini {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.list-name-mini {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.item-count-mini {
+  font-size: 12px;
+  color: #666;
+  margin-right: 8px;
+}
+
+.btn-delete-mini {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.btn-delete-mini:hover {
+  color: #ff0000;
+}
+
+.list-option-compact.create-new {
+  font-weight: 600;
+  color: var(--primary-black);
+}
+
+/* Add Item Form */
+.add-item-form-compact {
+  background: white;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.product-input-compact {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.form-actions-compact {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-text-compact {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+}
+
+.btn-add-submit {
+  padding: 6px 16px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-add-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Items Container */
+.items-container-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Empty State */
+.empty-state-compact {
+  text-align: center;
+  padding: 48px 20px;
+  color: #666;
+}
+
+.empty-state-compact p {
+  margin-bottom: 4px;
+}
+
+.empty-state-compact .hint {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Compact Item */
+.item-compact {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.item-compact:hover {
+  border-color: #000;
+}
+
+.item-compact.checked {
+  opacity: 0.6;
+  background: #f5f5f5;
+}
+
+.item-compact.checked .item-name-compact {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.check-compact {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  background: white;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+}
+
+.check-compact:hover {
+  background: #f5f5f5;
+}
+
+.check-compact.checked {
+  background: var(--primary-black);
+  border-color: var(--primary-black);
+}
+
+.item-content-compact {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.item-name-compact {
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-meta-compact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.quantity-compact {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+.added-by-compact {
+  font-size: 11px;
+  color: #999;
+}
+
+.item-actions-compact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.qty-btn-compact,
+.social-btn-compact,
+.delete-btn-compact {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.qty-btn-compact:hover {
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+.social-btn-compact:hover {
+  background: #f5f5f5;
+  border-color: #000;
+}
+
+.social-btn-compact.liked {
+  background: #ffebee;
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+.social-btn-compact.liked svg {
+  fill: #ff0000;
+}
+
+.social-btn-compact span,
+.qty-btn-compact span {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ff0000;
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 8px;
+  min-width: 14px;
+  text-align: center;
+}
+
+.delete-btn-compact {
+  border-color: transparent;
+  color: #999;
+}
+
+.delete-btn-compact:hover {
+  background: #ffebee;
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+/* Comments */
+.comments-compact {
+  margin-top: 0;
+  padding: 6px 8px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  font-size: 12px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.comment-compact {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+  align-items: flex-start;
+}
+
+.comment-compact:last-child {
+  margin-bottom: 0;
+}
+
+.comment-avatar-compact {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.comment-text-compact {
+  flex: 1;
+  line-height: 1.4;
+  color: #333;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.comment-input-compact {
+  display: flex;
+  gap: 4px;
+  margin-top: 0;
+}
+
+.comment-input-compact input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 12px;
+  background: white;
+  transition: all 0.2s;
+}
+
+.comment-input-compact input:focus {
+  outline: none;
+  border-color: var(--primary-yellow);
+}
+
+.comment-input-compact button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  background: var(--primary-yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.comment-input-compact button:hover:not(:disabled) {
+  background: var(--primary-black);
+  color: var(--primary-yellow);
+  transform: scale(1.05);
+}
+
+.comment-input-compact button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Section Divider */
+.section-divider-compact {
+  text-align: center;
+  margin: 12px 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #999;
+  letter-spacing: 0.5px;
+}
+
+/* Modal */
+.modal-content-compact {
+  background-color: white;
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 360px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-content-compact h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.input-compact {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.input-compact:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 213, 0, 0.3);
+}
+
+.selector-group {
+  margin-bottom: 16px;
+}
+
+.selector-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.icon-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.icon-option-compact {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.icon-option-compact:hover {
+  border-color: #000;
+}
+
+.icon-option-compact.selected {
+  border-color: var(--primary-yellow);
+  background: rgba(255, 213, 0, 0.1);
+}
+
+.color-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.color-option-compact {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.color-option-compact:hover {
+  transform: scale(1.1);
+}
+
+.color-option-compact.selected {
+  border-color: #000;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
+}
+
+.modal-actions-compact {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.btn-cancel-compact,
+.btn-primary-compact {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel-compact {
+  background: white;
+  color: #000;
+}
+
+.btn-cancel-compact:hover {
+  background: #f5f5f5;
+}
+
+.btn-primary-compact {
+  background: var(--primary-yellow);
+  color: #000;
+}
+
+.btn-primary-compact:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .shopping-list-compact {
+    padding: 6px;
+  }
+  
+  .item-compact {
+    padding: 6px;
+  }
+  
+  .item-name-compact {
+    font-size: 13px;
+  }
+  
+  .qty-btn-compact,
+  .social-btn-compact,
+  .delete-btn-compact {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .check-compact {
+    width: 18px;
+    height: 18px;
   }
 }

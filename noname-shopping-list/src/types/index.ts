@@ -31,16 +31,6 @@ export interface ShoppingItem {
   listId: string; // Adding list reference
 }
 
-export interface ItemComment {
-  id: string;
-  itemId: string;
-  userId: string;
-  userName: string;
-  userAvatar: string;
-  text: string;
-  timestamp: Date;
-}
-
 export interface ShoppingList {
   id: string;
   name: string;
@@ -50,6 +40,16 @@ export interface ShoppingList {
   createdBy: string;
   createdAt: Date;
   itemCount: number;
+}
+
+export interface ItemComment {
+  id: string;
+  itemId: string;
+  userId: string;
+  userName: string;
+  userAvatar: string;
+  text: string;
+  timestamp: Date;
 }
 
 export interface ChatMessage {

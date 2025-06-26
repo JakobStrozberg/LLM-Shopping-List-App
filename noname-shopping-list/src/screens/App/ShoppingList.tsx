@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../store';
-import { Plus, Check, Trash2, ShoppingBag, ChevronDown, MoreVertical, Edit2, Heart, MessageCircle, Send } from 'lucide-react';
+import { Plus, Check, X, ShoppingBag, ChevronDown, Heart, MessageCircle, Send, Minus } from 'lucide-react';
 import { ProductSuggestion } from '../../components/ProductSuggestion';
 import { Product } from '../../types';
 
@@ -32,7 +32,6 @@ export const ShoppingList: React.FC = () => {
     toggleItemLike,
     addItemComment,
     getItemComments,
-    itemComments,
   } = useStore();
   
   const [showAddItem, setShowAddItem] = useState(false);
@@ -40,7 +39,6 @@ export const ShoppingList: React.FC = () => {
   const [showCreateList, setShowCreateList] = useState(false);
   const [itemName, setItemName] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   const [commentTexts, setCommentTexts] = useState<{ [key: string]: string }>({});
   
   // New list creation state
@@ -79,16 +77,6 @@ export const ShoppingList: React.FC = () => {
     setItemName(product.name);
   };
 
-  const toggleComments = (itemId: string) => {
-    const newExpanded = new Set(expandedComments);
-    if (newExpanded.has(itemId)) {
-      newExpanded.delete(itemId);
-    } else {
-      newExpanded.add(itemId);
-    }
-    setExpandedComments(newExpanded);
-  };
-
   const handleAddComment = (itemId: string) => {
     const text = commentTexts[itemId];
     if (text?.trim()) {
@@ -103,42 +91,42 @@ export const ShoppingList: React.FC = () => {
 
   if (!currentList && familyLists.length === 0) {
     return (
-      <div className="shopping-list-screen modern">
+      <div className="shopping-list-compact">
         <div className="empty-lists-state">
-          <ShoppingBag size={64} strokeWidth={1.5} />
+          <ShoppingBag size={48} strokeWidth={1.5} />
           <h2>No shopping lists yet</h2>
           <p>Create your first list to get started</p>
           <button 
-            className="btn-create-first-list"
+            className="btn-primary-compact"
             onClick={() => setShowCreateList(true)}
           >
-            <Plus size={20} />
+            <Plus size={18} />
             Create List
           </button>
         </div>
         
         {showCreateList && (
           <div className="modal-overlay" onClick={() => setShowCreateList(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content-compact" onClick={(e) => e.stopPropagation()}>
               <h3>Create New List</h3>
               <form onSubmit={handleCreateList}>
                 <input
                   type="text"
-                  placeholder="List name (e.g., Weekly Groceries)"
+                  placeholder="List name"
                   value={newListName}
                   onChange={(e) => setNewListName(e.target.value)}
-                  className="input modern"
+                  className="input-compact"
                   autoFocus
                 />
                 
-                <div className="icon-selector">
-                  <label>Choose an icon:</label>
-                  <div className="icon-grid">
+                <div className="selector-group">
+                  <label>Icon</label>
+                  <div className="icon-grid-compact">
                     {LIST_ICONS.map(icon => (
                       <button
                         key={icon}
                         type="button"
-                        className={`icon-option ${selectedIcon === icon ? 'selected' : ''}`}
+                        className={`icon-option-compact ${selectedIcon === icon ? 'selected' : ''}`}
                         onClick={() => setSelectedIcon(icon)}
                       >
                         {icon}
@@ -147,14 +135,14 @@ export const ShoppingList: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="color-selector">
-                  <label>Choose a color:</label>
-                  <div className="color-grid">
+                <div className="selector-group">
+                  <label>Color</label>
+                  <div className="color-grid-compact">
                     {LIST_COLORS.map(color => (
                       <button
                         key={color.value}
                         type="button"
-                        className={`color-option ${selectedColor === color.value ? 'selected' : ''}`}
+                        className={`color-option-compact ${selectedColor === color.value ? 'selected' : ''}`}
                         style={{ backgroundColor: color.value }}
                         onClick={() => setSelectedColor(color.value)}
                       />
@@ -162,12 +150,12 @@ export const ShoppingList: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="modal-actions">
-                  <button type="button" onClick={() => setShowCreateList(false)} className="btn-modal-cancel">
+                <div className="modal-actions-compact">
+                  <button type="button" onClick={() => setShowCreateList(false)} className="btn-cancel-compact">
                     Cancel
                   </button>
-                  <button type="submit" className="btn-modal-primary">
-                    Create List
+                  <button type="submit" className="btn-primary-compact">
+                    Create
                   </button>
                 </div>
               </form>
@@ -179,90 +167,90 @@ export const ShoppingList: React.FC = () => {
   }
 
   return (
-    <div className="shopping-list-screen modern">
-      <div className="list-header modern">
+    <div className="shopping-list-compact">
+      <div className="list-header-compact">
         <button 
-          className="list-selector-btn"
+          className="list-selector-compact"
           onClick={() => setShowListSelector(!showListSelector)}
           style={{ borderColor: currentList?.color }}
         >
-          <span className="list-icon">{currentList?.icon}</span>
-          <span className="list-name">{currentList?.name || 'Select a list'}</span>
-          <ChevronDown size={20} className={showListSelector ? 'rotated' : ''} />
+          <span className="list-icon-compact">{currentList?.icon}</span>
+          <span className="list-name-compact">{currentList?.name || 'Select a list'}</span>
+          <ChevronDown size={16} className={showListSelector ? 'rotated' : ''} />
         </button>
         
         <button
-          className="btn-add-item"
+          className="btn-add-compact"
           onClick={() => setShowAddItem(!showAddItem)}
           style={{ backgroundColor: currentList?.color }}
         >
-          <Plus size={24} />
+          <Plus size={20} />
         </button>
       </div>
 
       {showListSelector && (
-        <div className="list-dropdown">
+        <div className="list-dropdown-compact">
           {familyLists.map(list => (
             <button
               key={list.id}
-              className={`list-option ${currentList?.id === list.id ? 'active' : ''}`}
+              className={`list-option-compact ${currentList?.id === list.id ? 'active' : ''}`}
               onClick={() => {
                 selectList(list.id);
                 setShowListSelector(false);
               }}
             >
-              <span className="list-icon">{list.icon}</span>
-              <span className="list-name">{list.name}</span>
-              <span className="item-count">{list.itemCount} items</span>
+              <span className="list-icon-mini">{list.icon}</span>
+              <span className="list-name-mini">{list.name}</span>
+              <span className="item-count-mini">{list.itemCount}</span>
               {currentList?.id === list.id && (
                 <button
-                  className="btn-delete-list"
+                  className="btn-delete-mini"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (window.confirm('Delete this list and all its items?')) {
+                    if (window.confirm('Delete this list?')) {
                       deleteList(list.id);
                       setShowListSelector(false);
                     }
                   }}
                 >
-                  <Trash2 size={16} />
+                  <X size={14} />
                 </button>
               )}
             </button>
           ))}
           <button
-            className="list-option create-new"
+            className="list-option-compact create-new"
             onClick={() => {
               setShowCreateList(true);
               setShowListSelector(false);
             }}
           >
-            <Plus size={20} />
-            Create New List
+            <Plus size={16} />
+            New List
           </button>
         </div>
       )}
 
       {showAddItem && currentList && (
-        <form onSubmit={handleAddItem} className="add-item-form modern">
+        <form onSubmit={handleAddItem} className="add-item-form-compact">
           <ProductSuggestion
             value={itemName}
             onChange={setItemName}
             onProductSelect={handleProductSelect}
             placeholder="Add item..."
-            className="product-input-modern"
+            className="product-input-compact"
           />
-          <div className="form-actions modern">
+          <div className="form-actions-compact">
             <button type="button" onClick={() => {
               setShowAddItem(false);
               setItemName('');
               setSelectedProduct(null);
-            }} className="btn-cancel">
+            }} className="btn-text-compact">
               Cancel
             </button>
             <button 
               type="submit" 
-              className="btn-add"
+              className="btn-add-submit"
               style={{ backgroundColor: currentList.color }}
               disabled={!itemName.trim()}
             >
@@ -272,245 +260,174 @@ export const ShoppingList: React.FC = () => {
         </form>
       )}
 
-      <div className="items-container modern">
+      <div className="items-container-compact">
         {uncheckedItems.length === 0 && checkedItems.length === 0 && (
-          <div className="empty-state modern">
+          <div className="empty-state-compact">
             <p>Your list is empty</p>
             <p className="hint">Tap + to add items</p>
           </div>
         )}
 
-        {uncheckedItems.map((item) => (
-          <div key={item.id} className="item-card modern">
-            <button
-              className="check-btn modern"
-              onClick={() => toggleItemCheck(item.id)}
-              style={{ borderColor: currentList?.color }}
-            >
-              <div className="checkbox modern" />
-            </button>
-            
-            <div className="item-details">
-              {item.image && (
-                <img 
-                  src={item.image} 
-                  alt={item.name}
-                  className="item-thumbnail"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
+        {uncheckedItems.map((item) => {
+          const comments = getItemComments(item.id);
+          return (
+            <div key={item.id} className="item-compact">
+              <div className="item-content-compact">
+                <button
+                  className="check-compact"
+                  onClick={() => toggleItemCheck(item.id)}
+                  style={{ borderColor: currentList?.color }}
                 />
-              )}
-              <div className="item-info">
-                <h4>{item.name}</h4>
-                <span className="item-quantity">Qty: {item.quantity}</span>
-                <div className="item-meta">
-                  <span className="added-by">{item.addedByAvatar} {item.addedByName}</span>
+                
+                <div className="item-main">
+                  <span className="item-name-compact">{item.name}</span>
+                  <div className="item-meta-compact">
+                    <span className="quantity-compact">×{item.quantity}</span>
+                    <span className="added-by-compact">{item.addedByAvatar}</span>
+                  </div>
+                </div>
+                
+                <div className="item-actions-compact">
+                  <button
+                    className="qty-btn-compact"
+                    onClick={() => updateItemQuantity(item.id, Math.max(1, item.quantity - 1))}
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <button
+                    className="qty-btn-compact"
+                    onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
+                  >
+                    <Plus size={14} />
+                  </button>
+                  <button
+                    className={`social-btn-compact ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
+                    onClick={() => toggleItemLike(item.id)}
+                  >
+                    <Heart size={14} />
+                    {item.likedBy.length > 0 && <span>{item.likedBy.length}</span>}
+                  </button>
+                  <button
+                    className="delete-btn-compact"
+                    onClick={() => deleteShoppingItem(item.id)}
+                  >
+                    <X size={14} />
+                  </button>
                 </div>
               </div>
-            </div>
-
-            <div className="item-actions modern">
-              <div className="quantity-control modern">
-                <button
-                  onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
-                >
-                  +
-                </button>
-              </div>
               
-              <div className="social-actions">
-                <button
-                  className={`btn-like ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
-                  onClick={() => toggleItemLike(item.id)}
-                >
-                  <Heart size={18} />
-                  {item.likedBy.length > 0 && <span>{item.likedBy.length}</span>}
-                </button>
-                
-                <button
-                  className="btn-comment"
-                  onClick={() => toggleComments(item.id)}
-                >
-                  <MessageCircle size={18} />
-                  {getItemComments(item.id).length > 0 && (
-                    <span>{getItemComments(item.id).length}</span>
-                  )}
-                </button>
-              </div>
-              
-              <button
-                className="btn-delete-item"
-                onClick={() => deleteShoppingItem(item.id)}
-              >
-                <Trash2 size={18} />
-              </button>
-            </div>
-            
-            {expandedComments.has(item.id) && (
-              <div className="comments-section">
-                <div className="comments-list">
-                  {getItemComments(item.id).map((comment) => (
-                    <div key={comment.id} className="comment">
-                      <span className="comment-avatar">{comment.userAvatar}</span>
-                      <div className="comment-content">
-                        <span className="comment-author">{comment.userName}</span>
-                        <p className="comment-text">{comment.text}</p>
-                      </div>
+              {/* Always show comments if they exist */}
+              {comments.length > 0 && (
+                <div className="comments-compact">
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="comment-compact">
+                      <span className="comment-avatar-compact">{comment.userAvatar}</span>
+                      <span className="comment-text-compact">{comment.text}</span>
                     </div>
                   ))}
                 </div>
-                <div className="comment-input-container">
-                  <input
-                    type="text"
-                    placeholder="Add a comment..."
-                    value={commentTexts[item.id] || ''}
-                    onChange={(e) => handleCommentTextChange(item.id, e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter') {
-                        handleAddComment(item.id);
-                      }
-                    }}
-                    className="comment-input"
-                  />
-                  <button
-                    className="btn-send-comment"
-                    onClick={() => handleAddComment(item.id)}
-                    disabled={!commentTexts[item.id]?.trim()}
-                  >
-                    <Send size={16} />
-                  </button>
-                </div>
+              )}
+              
+              {/* Comment input */}
+              <div className="comment-input-compact">
+                <input
+                  type="text"
+                  placeholder="Add comment..."
+                  value={commentTexts[item.id] || ''}
+                  onChange={(e) => handleCommentTextChange(item.id, e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddComment(item.id);
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => handleAddComment(item.id)}
+                  disabled={!commentTexts[item.id]?.trim()}
+                >
+                  <Send size={12} />
+                </button>
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
 
         {checkedItems.length > 0 && (
           <>
-            <div className="completed-section">
+            <div className="section-divider-compact">
               <span>Completed ({checkedItems.length})</span>
             </div>
-            {checkedItems.map((item) => (
-              <div key={item.id} className="item-card modern completed">
-                <button
-                  className="check-btn modern"
-                  onClick={() => toggleItemCheck(item.id)}
-                  style={{ backgroundColor: currentList?.color, borderColor: currentList?.color }}
-                >
-                  <Check size={18} color="white" />
-                </button>
-                
-                <div className="item-details">
-                  <div className="item-info">
-                    <h4>{item.name}</h4>
-                    <span className="item-quantity">Qty: {item.quantity}</span>
-                    <div className="item-meta">
-                      <span className="added-by">{item.addedByAvatar} {item.addedByName}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="item-actions modern">
-                  <div className="social-actions">
-                    <button
-                      className={`btn-like ${item.likedBy.includes(currentUser?.id || '') ? 'liked' : ''}`}
-                      onClick={() => toggleItemLike(item.id)}
-                    >
-                      <Heart size={18} />
-                      {item.likedBy.length > 0 && <span>{item.likedBy.length}</span>}
-                    </button>
-                    
-                    <button
-                      className="btn-comment"
-                      onClick={() => toggleComments(item.id)}
-                    >
-                      <MessageCircle size={18} />
-                      {getItemComments(item.id).length > 0 && (
-                        <span>{getItemComments(item.id).length}</span>
-                      )}
-                    </button>
-                  </div>
-                  
-                  <button
-                    className="btn-delete-item"
-                    onClick={() => deleteShoppingItem(item.id)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-                
-                {expandedComments.has(item.id) && (
-                  <div className="comments-section">
-                    <div className="comments-list">
-                      {getItemComments(item.id).map((comment) => (
-                        <div key={comment.id} className="comment">
-                          <span className="comment-avatar">{comment.userAvatar}</span>
-                          <div className="comment-content">
-                            <span className="comment-author">{comment.userName}</span>
-                            <p className="comment-text">{comment.text}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="comment-input-container">
-                      <input
-                        type="text"
-                        placeholder="Add a comment..."
-                        value={commentTexts[item.id] || ''}
-                        onChange={(e) => handleCommentTextChange(item.id, e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            handleAddComment(item.id);
-                          }
-                        }}
-                        className="comment-input"
-                      />
-                      <button
-                        className="btn-send-comment"
-                        onClick={() => handleAddComment(item.id)}
-                        disabled={!commentTexts[item.id]?.trim()}
-                      >
-                        <Send size={16} />
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+                         {checkedItems.map((item) => {
+               const comments = getItemComments(item.id);
+               return (
+                 <div key={item.id} className="item-compact checked">
+                   <div className="item-content-compact">
+                     <button
+                       className="check-compact checked"
+                       onClick={() => toggleItemCheck(item.id)}
+                       style={{ backgroundColor: currentList?.color, borderColor: currentList?.color }}
+                     >
+                       <Check size={12} color="white" />
+                     </button>
+                     
+                     <div className="item-main">
+                       <span className="item-name-compact">{item.name}</span>
+                       <div className="item-meta-compact">
+                         <span className="quantity-compact">×{item.quantity}</span>
+                         <span className="added-by-compact">{item.addedByAvatar}</span>
+                       </div>
+                     </div>
+                     
+                     <div className="item-actions-compact">
+                       <button
+                         className="delete-btn-compact"
+                         onClick={() => deleteShoppingItem(item.id)}
+                       >
+                         <X size={14} />
+                       </button>
+                     </div>
+                   </div>
+                   
+                   {/* Always show comments if they exist for completed items too */}
+                   {comments.length > 0 && (
+                     <div className="comments-compact">
+                       {comments.map((comment) => (
+                         <div key={comment.id} className="comment-compact">
+                           <span className="comment-avatar-compact">{comment.userAvatar}</span>
+                           <span className="comment-text-compact">{comment.text}</span>
+                         </div>
+                       ))}
+                     </div>
+                   )}
+                 </div>
+               );
+             })}
           </>
         )}
       </div>
 
       {showCreateList && (
         <div className="modal-overlay" onClick={() => setShowCreateList(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content-compact" onClick={(e) => e.stopPropagation()}>
             <h3>Create New List</h3>
             <form onSubmit={handleCreateList}>
               <input
                 type="text"
-                placeholder="List name (e.g., Weekly Groceries)"
+                placeholder="List name"
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
-                className="input modern"
+                className="input-compact"
                 autoFocus
               />
               
-              <div className="icon-selector">
-                <label>Choose an icon:</label>
-                <div className="icon-grid">
+              <div className="selector-group">
+                <label>Icon</label>
+                <div className="icon-grid-compact">
                   {LIST_ICONS.map(icon => (
                     <button
                       key={icon}
                       type="button"
-                      className={`icon-option ${selectedIcon === icon ? 'selected' : ''}`}
+                      className={`icon-option-compact ${selectedIcon === icon ? 'selected' : ''}`}
                       onClick={() => setSelectedIcon(icon)}
                     >
                       {icon}
@@ -519,14 +436,14 @@ export const ShoppingList: React.FC = () => {
                 </div>
               </div>
               
-              <div className="color-selector">
-                <label>Choose a color:</label>
-                <div className="color-grid">
+              <div className="selector-group">
+                <label>Color</label>
+                <div className="color-grid-compact">
                   {LIST_COLORS.map(color => (
                     <button
                       key={color.value}
                       type="button"
-                      className={`color-option ${selectedColor === color.value ? 'selected' : ''}`}
+                      className={`color-option-compact ${selectedColor === color.value ? 'selected' : ''}`}
                       style={{ backgroundColor: color.value }}
                       onClick={() => setSelectedColor(color.value)}
                     />
@@ -534,12 +451,12 @@ export const ShoppingList: React.FC = () => {
                 </div>
               </div>
               
-              <div className="modal-actions">
-                <button type="button" onClick={() => setShowCreateList(false)} className="btn-modal-cancel">
+              <div className="modal-actions-compact">
+                <button type="button" onClick={() => setShowCreateList(false)} className="btn-cancel-compact">
                   Cancel
                 </button>
-                <button type="submit" className="btn-modal-primary">
-                  Create List
+                <button type="submit" className="btn-primary-compact">
+                  Create
                 </button>
               </div>
             </form>
