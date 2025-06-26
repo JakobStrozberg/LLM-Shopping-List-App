@@ -1,9 +1,9 @@
 import React from 'react';
 import { useStore } from '../../store';
-import { Trophy, Copy, Users } from 'lucide-react';
+import { Trophy, Copy, Users, LogOut } from 'lucide-react';
 
 export const Family: React.FC = () => {
-  const { currentFamily, currentUser, mockUsers } = useStore();
+  const { currentFamily, currentUser, mockUsers, logout } = useStore();
 
   const familyMembers = currentFamily?.members.map(memberId => 
     mockUsers.find(user => user.id === memberId) || 
@@ -15,6 +15,12 @@ export const Family: React.FC = () => {
       navigator.clipboard.writeText(currentFamily.inviteCode);
       // In a real app, show a toast notification
       alert('Invite code copied!');
+    }
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout? This will clear all your data.')) {
+      logout();
     }
   };
 
@@ -74,6 +80,13 @@ export const Family: React.FC = () => {
           <p className="stat-value">$45</p>
           <p className="stat-label">Using NoName brand</p>
         </div>
+      </div>
+
+      <div className="logout-section">
+        <button onClick={handleLogout} className="btn btn-logout">
+          <LogOut size={20} />
+          Reset & Logout
+        </button>
       </div>
     </div>
   );

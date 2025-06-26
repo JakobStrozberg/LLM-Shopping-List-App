@@ -7,7 +7,7 @@ export const TabBar: React.FC = () => {
   const location = useLocation();
 
   const tabs = [
-    { path: '/app/shopping-list', icon: ShoppingCart, label: 'List' },
+    { path: '/app/shopping', icon: ShoppingCart, label: 'List' },
     { path: '/app/chat', icon: MessageSquare, label: 'Chat' },
     { path: '/app/family', icon: Users, label: 'Family' },
   ];

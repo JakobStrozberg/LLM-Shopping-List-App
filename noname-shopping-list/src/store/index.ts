@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { User, Family, ShoppingItem, ChatMessage } from '../types';
+import { User, Family, ShoppingItem, ChatMessage, ShoppingList } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 interface AppState {
   // Auth
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
+  logout: () => void;
   
   // Families
   families: Family[];
@@ -15,11 +16,20 @@ interface AppState {
   joinFamily: (inviteCode: string) => boolean;
   selectFamily: (familyId: string) => void;
   
-  // Shopping List
+  // Shopping Lists
+  shoppingLists: ShoppingList[];
+  currentList: ShoppingList | null;
+  createShoppingList: (name: string, icon: string, color: string) => void;
+  selectList: (listId: string) => void;
+  deleteList: (listId: string) => void;
+  
+  // Shopping Items
   shoppingItems: ShoppingItem[];
-  addShoppingItem: (name: string, comment?: string) => void;
+  addShoppingItem: (name: string, comment?: string, image?: string, quantity?: number) => void;
+  updateItemQuantity: (itemId: string, quantity: number) => void;
   toggleItemCheck: (itemId: string) => void;
   toggleItemLike: (itemId: string) => void;
+  deleteShoppingItem: (itemId: string) => void;
   
   // Chat
   chatMessages: ChatMessage[];
@@ -52,6 +62,13 @@ export const useStore = create<AppState>()(
       // Auth
       currentUser: null,
       setCurrentUser: (user) => set({ currentUser: user }),
+      logout: () => set({ 
+        currentUser: null, 
+        currentFamily: null,
+        currentList: null,
+        shoppingItems: [],
+        chatMessages: [] 
+      }),
       
       // Families
       families: [MOCK_FAMILY],
@@ -91,17 +108,59 @@ export const useStore = create<AppState>()(
         set({ currentFamily: family || null });
       },
       
-      // Shopping List
+      // Shopping Lists
+      shoppingLists: [],
+      currentList: null,
+      
+      createShoppingList: (name, icon, color) => {
+        const user = get().currentUser;
+        const family = get().currentFamily;
+        if (!user || !family) return;
+        
+        const newList: ShoppingList = {
+          id: uuidv4(),
+          name,
+          familyId: family.id,
+          color,
+          icon,
+          createdBy: user.id,
+          createdAt: new Date(),
+          itemCount: 0,
+        };
+        
+        set((state) => ({
+          shoppingLists: [...state.shoppingLists, newList],
+          currentList: newList,
+        }));
+      },
+      
+      selectList: (listId) => {
+        const list = get().shoppingLists.find(l => l.id === listId);
+        set({ currentList: list || null });
+      },
+      
+      deleteList: (listId) => {
+        set((state) => ({
+          shoppingLists: state.shoppingLists.filter(l => l.id !== listId),
+          shoppingItems: state.shoppingItems.filter(item => item.listId !== listId),
+          currentList: state.currentList?.id === listId ? null : state.currentList,
+        }));
+      },
+      
+      // Shopping Items
       shoppingItems: [],
       
-      addShoppingItem: (name, comment) => {
+      addShoppingItem: (name, comment, image, quantity = 1) => {
         const user = get().currentUser;
-        if (!user) return;
+        const currentList = get().currentList;
+        if (!user || !currentList) return;
         
         const newItem: ShoppingItem = {
           id: uuidv4(),
           name,
           comment,
+          image,
+          quantity,
           addedBy: user.id,
           addedByName: user.name,
           addedByAvatar: user.avatar,
@@ -109,10 +168,16 @@ export const useStore = create<AppState>()(
           checked: false,
           createdAt: new Date(),
           updatedAt: new Date(),
+          listId: currentList.id,
         };
         
         set((state) => ({
           shoppingItems: [...state.shoppingItems, newItem],
+          shoppingLists: state.shoppingLists.map(list =>
+            list.id === currentList.id
+              ? { ...list, itemCount: list.itemCount + 1 }
+              : list
+          ),
         }));
         
         // Simulate other users adding items occasionally
@@ -124,6 +189,7 @@ export const useStore = create<AppState>()(
               id: uuidv4(),
               name: mockItems[Math.floor(Math.random() * mockItems.length)],
               comment: Math.random() > 0.5 ? 'Get the organic one!' : undefined,
+              quantity: Math.floor(Math.random() * 3) + 1,
               addedBy: randomUser.id,
               addedByName: randomUser.name,
               addedByAvatar: randomUser.avatar,
@@ -131,12 +197,27 @@ export const useStore = create<AppState>()(
               checked: false,
               createdAt: new Date(),
               updatedAt: new Date(),
+              listId: currentList.id,
             };
             set((state) => ({
               shoppingItems: [...state.shoppingItems, mockItem],
+              shoppingLists: state.shoppingLists.map(list =>
+                list.id === currentList.id
+                  ? { ...list, itemCount: list.itemCount + 1 }
+                  : list
+              ),
             }));
           }
         }, Math.random() * 10000 + 5000);
+      },
+      
+      updateItemQuantity: (itemId, quantity) => {
+        if (quantity < 1) return;
+        set((state) => ({
+          shoppingItems: state.shoppingItems.map(item =>
+            item.id === itemId ? { ...item, quantity, updatedAt: new Date() } : item
+          ),
+        }));
       },
       
       toggleItemCheck: (itemId) => {
@@ -161,6 +242,20 @@ export const useStore = create<AppState>()(
             }
             return item;
           }),
+        }));
+      },
+      
+      deleteShoppingItem: (itemId) => {
+        const item = get().shoppingItems.find(i => i.id === itemId);
+        if (!item) return;
+        
+        set((state) => ({
+          shoppingItems: state.shoppingItems.filter(i => i.id !== itemId),
+          shoppingLists: state.shoppingLists.map(list =>
+            list.id === item.listId
+              ? { ...list, itemCount: Math.max(0, list.itemCount - 1) }
+              : list
+          ),
         }));
       },
       

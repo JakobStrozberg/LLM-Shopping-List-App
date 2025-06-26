@@ -34,7 +34,7 @@ function App() {
         <Route path="/signin" element={<Navigate to="/" replace />} />
         <Route path="/family-setup" element={
           currentUser ? (
-            currentFamily ? <Navigate to="/app/shopping-list" replace /> : <FamilySetup />
+            currentFamily ? <Navigate to="/app/shopping" replace /> : <FamilySetup />
           ) : (
             <Navigate to="/" replace />
           )
@@ -46,8 +46,8 @@ function App() {
             <AppLayout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="/app/shopping-list" replace />} />
-          <Route path="shopping-list" element={<ShoppingList />} />
+          <Route index element={<Navigate to="/app/shopping" replace />} />
+          <Route path="shopping" element={<ShoppingList />} />
           <Route path="chat" element={<Chat />} />
           <Route path="family" element={<Family />} />
         </Route>

@@ -19,6 +19,8 @@ export interface ShoppingItem {
   id: string;
   name: string;
   comment?: string;
+  image?: string;
+  quantity: number;
   addedBy: string; // user ID
   addedByName: string;
   addedByAvatar: string;
@@ -26,6 +28,18 @@ export interface ShoppingItem {
   checked: boolean;
   createdAt: Date;
   updatedAt: Date;
+  listId: string; // Adding list reference
+}
+
+export interface ShoppingList {
+  id: string;
+  name: string;
+  familyId: string;
+  color: string; // For visual distinction
+  icon: string; // Emoji icon
+  createdBy: string;
+  createdAt: Date;
+  itemCount: number;
 }
 
 export interface ChatMessage {
@@ -36,6 +50,14 @@ export interface ChatMessage {
   userAvatar: string;
   message: string;
   timestamp: Date;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  image?: string;
+  brand?: string;
 }
 
 export const AVATARS = [

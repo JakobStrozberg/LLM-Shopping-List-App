@@ -1,36 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
-import { Users, Plus, LogIn } from 'lucide-react';
+import { Users, Plus, LogIn, UserPlus } from 'lucide-react';
 
 export const FamilySetup: React.FC = () => {
   const navigate = useNavigate();
-  const { createFamily, joinFamily, currentUser } = useStore();
-  const [mode, setMode] = useState<'create' | 'join' | null>(null);
+  const { createFamily, joinFamily, createShoppingList, currentUser } = useStore();
+  const [mode, setMode] = useState<'choose' | 'create' | 'join'>('choose');
   const [familyName, setFamilyName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [error, setError] = useState('');
 
   const handleCreateFamily = (e: React.FormEvent) => {
     e.preventDefault();
-    const family = createFamily(familyName);
-    navigate('/app/shopping-list');
+    if (familyName.trim()) {
+      const family = createFamily(familyName);
+      // Create a default shopping list
+      createShoppingList('Groceries', '🛒', '#FFD500');
+      navigate('/app/shopping');
+    }
   };
 
   const handleJoinFamily = (e: React.FormEvent) => {
     e.preventDefault();
-    const success = joinFamily(inviteCode.toUpperCase());
-    if (success) {
-      navigate('/app/shopping-list');
-    } else {
-      setError('Invalid invite code or family is full');
+    if (inviteCode.trim()) {
+      const success = joinFamily(inviteCode.toUpperCase());
+      if (success) {
+        // Create a default shopping list for the user
+        createShoppingList('Groceries', '🛒', '#FFD500');
+        navigate('/app/shopping');
+      } else {
+        setError('Invalid invite code or family is full');
+      }
     }
   };
 
   const handleQuickDemo = () => {
     // Join the mock family for demo
     joinFamily('SMITH123');
-    navigate('/app/shopping-list');
+    // Create a default shopping list for demo
+    createShoppingList('Groceries', '🛒', '#FFD500');
+    navigate('/app/shopping');
   };
 
   if (!currentUser) {
@@ -45,7 +55,7 @@ export const FamilySetup: React.FC = () => {
         <p>Let's get you connected with your family</p>
       </div>
 
-      {!mode && (
+      {mode === 'choose' && (
         <div className="options">
           <button
             className="option-card"
@@ -89,7 +99,7 @@ export const FamilySetup: React.FC = () => {
           />
           <p className="hint">Up to 5 members can join your family</p>
           <div className="form-actions">
-            <button type="button" onClick={() => setMode(null)} className="btn btn-secondary">
+            <button type="button" onClick={() => setMode('choose')} className="btn btn-secondary">
               Back
             </button>
             <button type="submit" className="btn btn-primary">
@@ -116,7 +126,7 @@ export const FamilySetup: React.FC = () => {
           <p className="hint">Ask your family member for the invite code</p>
           <div className="form-actions">
             <button type="button" onClick={() => {
-              setMode(null);
+              setMode('choose');
               setError('');
             }} className="btn btn-secondary">
               Back
