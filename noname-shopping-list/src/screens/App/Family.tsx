@@ -1,6 +1,32 @@
 import React from 'react';
 import { useStore } from '../../store';
-import { Trophy, Copy, Users, LogOut, TrendingUp, DollarSign } from 'lucide-react';
+import { Trophy, Copy, Users, LogOut, Gift, Star, TrendingUp } from 'lucide-react';
+import { FamilyReward } from '../../types';
+
+// Mock rewards data
+const FAMILY_REWARDS: FamilyReward[] = [
+  {
+    id: '1',
+    name: 'Glassware Set',
+    description: 'Premium 12-piece glassware set',
+    pointsRequired: 5000,
+    image: '/reward.jpeg'
+  },
+  {
+    id: '2',
+    name: 'Kitchen Knife Set',
+    description: 'Professional 5-piece knife set',
+    pointsRequired: 8000,
+    image: 'https://assets.shop.loblaws.ca/products/20070132001/b2/en/front/20070132001_front_a06_@2.png' // placeholder
+  },
+  {
+    id: '3',
+    name: 'Cookware Set',
+    description: 'Non-stick 10-piece cookware',
+    pointsRequired: 12000,
+    image: 'https://assets.shop.loblaws.ca/products/20143381001/b2/en/front/20143381001_front_a06_@2.png' // placeholder
+  }
+];
 
 export const Family: React.FC = () => {
   const { currentFamily, currentUser, mockUsers, logout } = useStore();
@@ -24,67 +50,155 @@ export const Family: React.FC = () => {
     }
   };
 
+  // Calculate progress to next reward
+  const currentPoints = currentFamily?.totalPoints || 0;
+  const nextReward = FAMILY_REWARDS.find(reward => reward.pointsRequired > currentPoints) || FAMILY_REWARDS[0];
+  const progressPercentage = nextReward ? (currentPoints / nextReward.pointsRequired) * 100 : 100;
+  const pointsToNext = nextReward ? nextReward.pointsRequired - currentPoints : 0;
+
   return (
     <div className="family-screen">
-      <div className="family-header">
-        <h2 className="family-name">{currentFamily?.name}</h2>
-        <div className="invite-section">
-          <p className="invite-label">Invite Code</p>
-          <div className="invite-code-wrapper">
-            <span className="invite-code">{currentFamily?.inviteCode}</span>
-            <button onClick={copyInviteCode} className="copy-btn">
-              <Copy size={16} />
-            </button>
+      {/* Modern Hero Section with Progress */}
+      <div className="rewards-hero">
+        <div className="rewards-hero-content">
+          <h2 className="rewards-title">Family Rewards</h2>
+          <p className="rewards-subtitle">Shop together, earn rewards together!</p>
+          
+          <div className="points-display">
+            <div className="points-current">
+              <Star className="star-icon" size={24} />
+              <span className="points-number">{currentPoints.toLocaleString()}</span>
+              <span className="points-label">points</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="points-card">
-        <div className="trophy-icon">🏆</div>
-        <div className="points-info">
-          <h3 className="points-label">Family Points</h3>
-          <p className="points-value">{currentFamily?.totalPoints.toLocaleString()}</p>
-          <p className="points-label">NoName Points earned together</p>
+      {/* Next Reward Progress Card */}
+      <div className="next-reward-card">
+        <div className="reward-progress-header">
+          <h3>Next Reward</h3>
+          <span className="points-remaining">{pointsToNext.toLocaleString()} points to go!</span>
+        </div>
+        
+        <div className="reward-preview">
+          <img 
+            src={nextReward?.image || '/reward.jpeg'} 
+            alt={nextReward?.name} 
+            className="reward-preview-image"
+          />
+          <div className="reward-preview-info">
+            <h4>{nextReward?.name}</h4>
+            <p>{nextReward?.description}</p>
+          </div>
+        </div>
+
+        <div className="progress-bar-container">
+          <div className="progress-bar">
+            <div 
+              className="progress-bar-fill" 
+              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+            />
+          </div>
+          <div className="progress-labels">
+            <span>{currentPoints.toLocaleString()}</span>
+            <span>{nextReward?.pointsRequired.toLocaleString()}</span>
+          </div>
         </div>
       </div>
 
-      <div className="members-section">
-        <h3 className="members-header">
-          <Users size={20} />
-          Family Members ({familyMembers.length}/5)
+      {/* All Rewards Grid */}
+      <div className="rewards-section">
+        <h3 className="section-title">
+          <Gift size={20} />
+          Available Rewards
         </h3>
-        <div className="members-list">
-          {familyMembers.map((member) => (
-            <div key={member.id} className="member-card">
-              <div className="member-avatar">{member.avatar}</div>
-              <div className="member-info">
-                <p className="member-name">
-                  {member.name}
-                  {member.id === currentUser?.id && ' (You)'}
-                </p>
-                <p className="member-email">{member.email}</p>
+        <div className="rewards-grid">
+          {FAMILY_REWARDS.map((reward) => {
+            const isUnlocked = currentPoints >= reward.pointsRequired;
+            const progress = (currentPoints / reward.pointsRequired) * 100;
+            
+            return (
+              <div key={reward.id} className={`reward-card ${isUnlocked ? 'unlocked' : ''}`}>
+                <div className="reward-image-container">
+                  <img src={reward.image} alt={reward.name} className="reward-image" />
+                  {isUnlocked && (
+                    <div className="reward-unlocked-badge">
+                      <Trophy size={16} />
+                      Unlocked!
+                    </div>
+                  )}
+                </div>
+                <div className="reward-content">
+                  <h4 className="reward-name">{reward.name}</h4>
+                  <p className="reward-description">{reward.description}</p>
+                  <div className="reward-points">
+                    <Star size={14} />
+                    <span>{reward.pointsRequired.toLocaleString()} points</span>
+                  </div>
+                  {!isUnlocked && (
+                    <div className="reward-mini-progress">
+                      <div 
+                        className="reward-mini-progress-fill" 
+                        style={{ width: `${Math.min(progress, 100)}%` }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Family Info Section */}
+      <div className="family-info-section">
+        <div className="family-header-modern">
+          <div>
+            <h3 className="family-name">{currentFamily?.name}</h3>
+            <div className="invite-code-inline">
+              <span className="invite-label">Invite Code:</span>
+              <span className="invite-code">{currentFamily?.inviteCode}</span>
+              <button onClick={copyInviteCode} className="copy-btn-inline">
+                <Copy size={14} />
+              </button>
             </div>
-          ))}
+          </div>
+          <div className="weekly-stats">
+            <div className="stat-item">
+              <TrendingUp size={16} />
+              <span className="stat-value">+325</span>
+              <span className="stat-label">this week</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Members List */}
+        <div className="members-section-modern">
+          <h4 className="section-subtitle">
+            <Users size={18} />
+            Family Members ({familyMembers.length}/5)
+          </h4>
+          <div className="members-grid">
+            {familyMembers.map((member) => (
+              <div key={member.id} className="member-card-modern">
+                <div className="member-avatar">{member.avatar}</div>
+                <div className="member-details">
+                  <p className="member-name">
+                    {member.name}
+                    {member.id === currentUser?.id && <span className="you-badge">You</span>}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="stats-grid">
-        <div className="stat-card">
-          <h4 className="stat-label">This Week</h4>
-          <div className="stat-value">12</div>
-          <p className="stat-unit">Items purchased</p>
-        </div>
-        <div className="stat-card">
-          <h4 className="stat-label">Total Savings</h4>
-          <div className="stat-value">$45</div>
-          <p className="stat-unit">Using NoName brand</p>
-        </div>
-      </div>
-
+      {/* Logout Button */}
       <div className="logout-section">
         <button onClick={handleLogout} className="btn-logout">
-          <LogOut size={20} />
+          <LogOut size={18} />
           Reset & Logout
         </button>
       </div>

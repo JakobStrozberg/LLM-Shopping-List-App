@@ -30,6 +30,7 @@ export interface ShoppingItem {
   updatedAt: Date;
   listId: string; // Adding list reference
   category?: string; // Grocery category
+  tags?: string[]; // AI-generated tags for the item
 }
 
 export interface ShoppingList {
@@ -69,6 +70,17 @@ export interface Product {
   description: string;
   image?: string;
   brand?: string;
+  tags?: string[]; // AI-generated tags like "Good value", "Vegan", "Organic"
+  points?: number; // Points earned for purchasing this product
+}
+
+export interface FamilyReward {
+  id: string;
+  name: string;
+  description: string;
+  pointsRequired: number;
+  image: string;
+  unlocked?: boolean;
 }
 
 export const AVATARS = [

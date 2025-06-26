@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../types';
 import { Search } from 'lucide-react';
 import { searchProducts } from '../data/products';
+import { ProductTags } from './ProductTags';
 
 interface ProductSuggestionProps {
   value: string;
@@ -124,6 +125,7 @@ export const ProductSuggestion: React.FC<ProductSuggestionProps> = ({
                 {product.brand && (
                   <div className="product-brand">{product.brand}</div>
                 )}
+                {product.tags && <ProductTags tags={product.tags} size="small" maxTags={3} />}
               </div>
             </div>
           ))}

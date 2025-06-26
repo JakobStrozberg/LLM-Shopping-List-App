@@ -6,6 +6,8 @@ import {
   ShoppingBag, Search 
 } from 'lucide-react';
 import { ProductSuggestion } from '../../components/ProductSuggestion';
+import { SmartSuggestions } from '../../components/SmartSuggestions';
+import { ProductTags } from '../../components/ProductTags';
 import { Product } from '../../types';
 import { GROCERY_CATEGORIES } from '../../config/openai';
 
@@ -93,6 +95,12 @@ export const ShoppingList: React.FC = () => {
   const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
     setItemName(product.name);
+  };
+
+  const handleSmartSuggestionSelect = async (product: Product) => {
+    if (currentList) {
+      await addShoppingItem(product.name, undefined, product.image);
+    }
   };
 
   const handleAddComment = (itemId: string) => {
@@ -315,6 +323,15 @@ export const ShoppingList: React.FC = () => {
         </form>
       )}
 
+      {/* Smart Suggestions */}
+      {currentList && (
+        <SmartSuggestions
+          currentItems={uncheckedItems.map(item => item.name)}
+          onProductSelect={handleSmartSuggestionSelect}
+          isLoading={false}
+        />
+      )}
+
       <div className="items-container">
         {uncheckedItems.length === 0 && checkedItems.length === 0 && (
           <div className="empty-state">
@@ -391,6 +408,7 @@ export const ShoppingList: React.FC = () => {
                             <span className="user-avatar">{item.addedByAvatar}</span>
                             <span>Added by {item.addedBy}</span>
                           </div>
+                          {item.tags && <ProductTags tags={item.tags} size="small" maxTags={4} />}
                         </div>
                         
                         {/* Comments Section */}
@@ -496,6 +514,7 @@ export const ShoppingList: React.FC = () => {
                       <span className="user-avatar">{item.addedByAvatar}</span>
                       <span>Added by {item.addedBy}</span>
                     </div>
+                    {item.tags && <ProductTags tags={item.tags} size="small" maxTags={4} />}
                   </div>
                   
                   {/* Comments Section */}
@@ -580,6 +599,7 @@ export const ShoppingList: React.FC = () => {
                           <span className="user-avatar">{item.addedByAvatar}</span>
                           <span>Added by {item.addedBy}</span>
                         </div>
+                        {item.tags && <ProductTags tags={item.tags} size="small" maxTags={3} />}
                       </div>
                     </div>
                   </div>

@@ -9,6 +9,7 @@ A social shopping list app for Loblaws Digital's hackathon that makes grocery sh
 - 👨‍👩‍👧‍👦 **Family Groups**: Create or join families (up to 5 members)
 - ❤️ **Item Likes**: Family members can like items on the list
 - 💰 **Rewards Tracker**: Track NoName points earned as a family
+- 🧠 **Smart Suggestions**: AI-powered product recommendations based on your shopping list
 - 🎨 **NoName/PC Branding**: Clean yellow & black design
 
 ## Getting Started
@@ -53,9 +54,12 @@ The app includes mock data to simulate:
 
 This web app is designed to be embedded in a React Native WebView for the iOS app.
 
-## Setting up the Item Categorization Feature
+## Setting up the AI Features
 
-The shopping list now includes an AI-powered feature to automatically categorize items by store sections (dairy, produce, etc.) for a better shopping experience.
+The shopping list now includes two AI-powered features:
+
+1. **Smart Product Suggestions**: Get intelligent recommendations for complementary products (e.g., suggest "mayonnaise" when you have "ketchup" and "mustard")
+2. **Item Categorization**: Automatically categorize items by store sections (dairy, produce, etc.) for a better shopping experience
 
 ### Configuration
 
@@ -75,7 +79,16 @@ REACT_APP_OPENAI_API_KEY=your_openai_api_key_here
 
 ### How it works
 
+**Smart Suggestions:**
+- As you add items to your shopping list, the app suggests complementary products
+- Examples: Add "pasta" → suggests "tomato sauce", "parmesan cheese"; Add "ketchup" + "mustard" → suggests "mayonnaise"
+- Each suggestion includes a reason and confidence level
+- One-click addition to your shopping list
+
+**Item Categorization:**
 - When you add items to your shopping list, they will automatically be categorized using OpenAI's GPT-3.5
 - If no API key is provided, the app will fall back to a pattern-based categorization system
 - Toggle between categorized view and regular list view using the grid/list button in the header
 - Categories include: Produce, Dairy, Meat & Seafood, Bakery, Frozen, Pantry & Dry Goods, Snacks & Candy, Beverages, Health & Beauty, Household, Baby, Pet, and Other
+
+For more details about smart suggestions, see [FEATURES.md](./FEATURES.md).

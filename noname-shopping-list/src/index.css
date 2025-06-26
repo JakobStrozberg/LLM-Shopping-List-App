@@ -876,6 +876,9 @@ body {
 
 .item-details {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .item-header {
@@ -1759,4 +1762,270 @@ body {
   .message {
     max-width: 90%;
   }
+}
+
+/* ========== SMART SUGGESTIONS ========== */
+.smart-suggestions {
+  margin: var(--space-lg) 0;
+  background: var(--noname-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  border: 2px solid var(--noname-yellow);
+  animation: fadeInUp var(--transition-base) ease-out;
+}
+
+.smart-suggestions-empty,
+.smart-suggestions-loading {
+  padding: var(--space-xl);
+  text-align: center;
+  background: var(--gray-50);
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-lg);
+  margin: var(--space-lg) 0;
+}
+
+.suggestion-icon {
+  margin-bottom: var(--space-md);
+  display: flex;
+  justify-content: center;
+}
+
+.suggestion-icon .pulse {
+  animation: pulse 2s infinite;
+}
+
+.suggestion-text {
+  color: var(--gray-600);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.suggestions-header {
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, var(--noname-yellow) 0%, var(--noname-yellow-light) 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color var(--transition-base);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.suggestions-header:hover {
+  background: linear-gradient(135deg, var(--noname-yellow-dark) 0%, var(--noname-yellow) 100%);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.suggestions-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--noname-black);
+  margin: 0;
+}
+
+.suggestions-count {
+  background: var(--noname-black);
+  color: var(--noname-white);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+.toggle-indicator {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--noname-black);
+  line-height: 1;
+}
+
+.suggestions-list {
+  padding: var(--space-md);
+  background: var(--noname-white);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  transition: all var(--transition-base);
+}
+
+.suggestion-item:last-child {
+  margin-bottom: 0;
+}
+
+.suggestion-item:hover {
+  background: var(--noname-white);
+  border-color: var(--noname-yellow);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.suggestion-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex: 1;
+}
+
+.suggestion-image {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+}
+
+.suggestion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.suggestion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-name {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-xs);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.suggestion-reason {
+  color: var(--gray-600);
+  font-size: 14px;
+  line-height: 1.3;
+  margin-bottom: var(--space-xs);
+}
+
+.suggestion-confidence {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.suggestion-add-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--noname-yellow);
+  border: 2px solid var(--noname-black);
+  color: var(--noname-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.suggestion-add-btn:hover {
+  background: var(--noname-black);
+  color: var(--noname-yellow);
+  transform: scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.suggestion-add-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Product Tags Component */
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.product-tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: white;
+  background-color: #757575;
+  padding: 2px 6px;
+  border-radius: 8px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.product-tags-small .product-tag {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 6px;
+}
+
+.product-tags-large .product-tag {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.product-tag-more {
+  background-color: #E0E0E0 !important;
+  color: #666 !important;
+}
+
+/* Update existing item styles to accommodate tags */
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.suggestion-item .product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Add some spacing for tags in suggestions */
+.suggestion-item .product-tags {
+  margin-top: 2px;
 }

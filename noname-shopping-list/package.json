@@ -13,6 +13,7 @@
     "@types/react-dom": "^19.1.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.6.0",
     "lucide-react": "^0.523.0",
     "openai": "^5.8.0",
     "react": "^19.1.0",

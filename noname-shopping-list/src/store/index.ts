@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { User, Family, ShoppingItem, ChatMessage, ShoppingList, ItemComment } from '../types';
 import { v4 as uuidv4 } from 'uuid';
-import { CategorizationService } from '../services/categorization';
+import { CategorizationService, TaggingService } from '../services/categorization';
 
 interface AppState {
   // Auth
@@ -162,8 +162,11 @@ export const useStore = create<AppState>()(
         const currentList = get().currentList;
         if (!user || !currentList) return;
         
-        // Get category for the item
-        const category = await CategorizationService.categorizeItem(name);
+        // Get category and tags for the item
+        const [category, tags] = await Promise.all([
+          CategorizationService.categorizeItem(name),
+          TaggingService.generateTags(name, comment)
+        ]);
         
         const newItem: ShoppingItem = {
           id: uuidv4(),
@@ -180,6 +183,7 @@ export const useStore = create<AppState>()(
           updatedAt: new Date(),
           listId: currentList.id,
           category,
+          tags,
         };
         
         set((state) => ({
@@ -198,13 +202,17 @@ export const useStore = create<AppState>()(
             const mockItems = ['Milk', 'Bread', 'Eggs', 'Cheese', 'Apples', 'Bananas'];
             const mockItemName = mockItems[Math.floor(Math.random() * mockItems.length)];
             
-            // Use async IIFE to handle async categorization
+            // Use async IIFE to handle async categorization and tagging
             (async () => {
-              const mockCategory = await CategorizationService.categorizeItem(mockItemName);
+              const mockComment = Math.random() > 0.5 ? 'Get the organic one!' : undefined;
+              const [mockCategory, mockTags] = await Promise.all([
+                CategorizationService.categorizeItem(mockItemName),
+                TaggingService.generateTags(mockItemName, mockComment)
+              ]);
               const mockItem: ShoppingItem = {
                 id: uuidv4(),
                 name: mockItemName,
-                comment: Math.random() > 0.5 ? 'Get the organic one!' : undefined,
+                comment: mockComment,
                 quantity: Math.floor(Math.random() * 3) + 1,
                 addedBy: randomUser.id,
                 addedByName: randomUser.name,
@@ -215,6 +223,7 @@ export const useStore = create<AppState>()(
                 updatedAt: new Date(),
                 listId: currentList.id,
                 category: mockCategory,
+                tags: mockTags,
               };
               set((state) => ({
                 shoppingItems: [...state.shoppingItems, mockItem],
