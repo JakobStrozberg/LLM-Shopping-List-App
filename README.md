@@ -11,6 +11,14 @@ A collaborative family shopping list app that helps families shop together, shar
 - 💬 **Collaboration**: Add comments and reactions to shared items
 - 🏪 **Store Organization**: Items automatically categorized by store sections
 
+## Screenshots
+
+<img width="465" alt="Screenshot 2025-06-28 at 10 41 40 AM" src="https://github.com/user-attachments/assets/40f5e210-f770-4b75-9cb8-a47b88e04579" />
+<img width="479" alt="Screenshot 2025-06-28 at 10 41 49 AM" src="https://github.com/user-attachments/assets/ac27e63e-e106-4a4f-ab11-59e184a6c3ab" />
+<img width="493" alt="Screenshot 2025-06-28 at 10 42 37 AM" src="https://github.com/user-attachments/assets/5f5da67f-bf94-4edf-a001-83e01c3005af" />
+<img width="466" alt="Screenshot 2025-06-28 at 10 42 10 AM" src="https://github.com/user-attachments/assets/9e729f78-92db-4c37-ac76-4cb4ff1c912d" />
+
+
 ## Setup Instructions
 
 ### Prerequisites
