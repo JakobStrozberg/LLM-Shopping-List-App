@@ -37,7 +37,6 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     }
   }, [currentItems, isManuallyCollapsed]);
 
-  // Only clear state when no items, never auto-load
   useEffect(() => {
     if (currentItems.length === 0) {
       setRecommendations([]);
@@ -48,7 +47,6 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
 
   const handleAddProduct = (product: Product) => {
     onProductSelect(product);
-    // Remove the added product from recommendations
     setRecommendations(prev => prev.filter(rec => rec.product.id !== product.id));
   };
 
@@ -65,9 +63,9 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
   };
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.8) return '#4CAF50'; // Green for high confidence
-    if (confidence >= 0.6) return '#FF9800'; // Orange for medium confidence
-    return '#757575'; // Gray for low confidence
+    if (confidence >= 0.8) return '#4CAF50';
+    if (confidence >= 0.6) return '#FF9800';
+    return '#757575';
   };
 
   const getConfidenceLabel = (confidence: number) => {
@@ -117,7 +115,6 @@ export const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     );
   }
 
-  // Show refresh prompt if haven't loaded yet but have items
   if (!hasLoadedOnce && currentItems.length > 0) {
     return (
       <div className="smart-suggestions-prompt">

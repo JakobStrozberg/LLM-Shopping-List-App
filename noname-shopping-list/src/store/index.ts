@@ -5,16 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { CategorizationService, TaggingService } from '../services/categorization';
 
 interface AppState {
-  // Auth
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   logout: () => void;
   
-  // Demo mode
   isDemoMode: boolean;
   setDemoMode: (isDemo: boolean) => void;
   
-  // Families
   families: Family[];
   currentFamily: Family | null;
   createFamily: (name: string) => Family;
@@ -22,14 +19,12 @@ interface AppState {
   selectFamily: (familyId: string) => void;
   setupDemoFamily: () => void;
   
-  // Shopping Lists
   shoppingLists: ShoppingList[];
   currentList: ShoppingList | null;
   createShoppingList: (name: string, icon: string, color: string) => void;
   selectList: (listId: string) => void;
   deleteList: (listId: string) => void;
   
-  // Shopping Items
   shoppingItems: ShoppingItem[];
   addShoppingItem: (name: string, comment?: string, image?: string, quantity?: number, points?: number) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
@@ -37,20 +32,16 @@ interface AppState {
   toggleItemLike: (itemId: string) => void;
   deleteShoppingItem: (itemId: string) => void;
   
-  // Item Comments
   itemComments: ItemComment[];
   addItemComment: (itemId: string, text: string) => void;
   getItemComments: (itemId: string) => ItemComment[];
   
-  // Chat
   chatMessages: ChatMessage[];
   sendMessage: (message: string) => void;
   
-  // Mock users for testing
   mockUsers: User[];
 }
 
-// Mock data for demo mode
 const DEMO_USERS: User[] = [
   { id: 'demo-mom', email: 'mom@smithfamily.com', name: 'Mom Smith', avatar: '👩', familyId: 'demo-family' },
   { id: 'demo-dad', email: 'dad@smithfamily.com', name: 'Dad Smith', avatar: '👨', familyId: 'demo-family' },
@@ -67,7 +58,6 @@ const DEMO_FAMILY: Family = {
   createdAt: new Date(),
 };
 
-// Demo shopping items
 const createDemoItems = (listId: string): ShoppingItem[] => [
   {
     id: 'demo-item-1',
@@ -138,7 +128,6 @@ const createDemoItems = (listId: string): ShoppingItem[] => [
   },
 ];
 
-// Demo comments
 const createDemoComments = (): ItemComment[] => [
   {
     id: 'demo-comment-1',
@@ -160,7 +149,6 @@ const createDemoComments = (): ItemComment[] => [
   },
 ];
 
-// Demo chat messages
 const DEMO_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'demo-chat-1',
@@ -194,7 +182,6 @@ const DEMO_CHAT_MESSAGES: ChatMessage[] = [
 export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
-      // Auth
       currentUser: null,
       setCurrentUser: (user) => set({ currentUser: user }),
       logout: () => set({ 
@@ -207,11 +194,9 @@ export const useStore = create<AppState>()(
         isDemoMode: false,
       }),
       
-      // Demo mode
       isDemoMode: false,
       setDemoMode: (isDemo) => set({ isDemoMode: isDemo }),
       
-      // Families
       families: [],
       currentFamily: null,
       
@@ -229,7 +214,6 @@ export const useStore = create<AppState>()(
           currentFamily: newFamily,
         }));
         
-        // Create a default shopping list for the new family
         const user = get().currentUser;
         if (user) {
           const defaultList: ShoppingList = {
@@ -260,7 +244,6 @@ export const useStore = create<AppState>()(
             family.members.push(currentUserId);
             set({ currentFamily: family });
             
-            // Create a default shopping list if none exists for this family
             const existingList = get().shoppingLists.find(l => l.familyId === family.id);
             if (!existingList) {
               const defaultList: ShoppingList = {
@@ -292,7 +275,6 @@ export const useStore = create<AppState>()(
         const user = get().currentUser;
         if (!user) return;
         
-        // Create demo family if it doesn't exist
         let demoFamily = get().families.find(f => f.id === 'demo-family');
         if (!demoFamily) {
           demoFamily = { ...DEMO_FAMILY };
@@ -301,7 +283,6 @@ export const useStore = create<AppState>()(
           }));
         }
         
-        // Add current user to demo family
         if (!demoFamily.members.includes(user.id)) {
           demoFamily.members.push(user.id);
         }
@@ -311,7 +292,6 @@ export const useStore = create<AppState>()(
           isDemoMode: true,
         });
         
-        // Create demo shopping list
         const demoList: ShoppingList = {
           id: 'demo-list',
           name: 'Weekly Groceries',
@@ -338,7 +318,6 @@ export const useStore = create<AppState>()(
         set({ currentFamily: family || null });
       },
       
-      // Shopping Lists
       shoppingLists: [],
       currentList: null,
       
@@ -377,7 +356,6 @@ export const useStore = create<AppState>()(
         }));
       },
       
-      // Shopping Items
       shoppingItems: [],
       
       addShoppingItem: async (name, comment, image, quantity = 1, points) => {
@@ -385,7 +363,6 @@ export const useStore = create<AppState>()(
         const currentList = get().currentList;
         if (!user || !currentList) return;
         
-        // Get category and tags for the item
         const [category, tags] = await Promise.all([
           CategorizationService.categorizeItem(name),
           TaggingService.generateTags(name, comment)
@@ -410,7 +387,6 @@ export const useStore = create<AppState>()(
           points,
         };
         
-        // Update family points if points are provided
         const currentFamily = get().currentFamily;
         if (points && currentFamily) {
           const totalPointsToAdd = points * quantity;
@@ -435,7 +411,6 @@ export const useStore = create<AppState>()(
           ),
         }));
         
-        // Simulate other users adding items occasionally (only in demo mode)
         if (get().isDemoMode && get().mockUsers.length > 0) {
           setTimeout(() => {
             const randomUser = get().mockUsers[Math.floor(Math.random() * get().mockUsers.length)];
@@ -443,7 +418,6 @@ export const useStore = create<AppState>()(
             const mockItems = ['Milk', 'Bread', 'Eggs', 'Cheese', 'Apples', 'Bananas'];
             const mockItemName = mockItems[Math.floor(Math.random() * mockItems.length)];
             
-            // Use async IIFE to handle async categorization and tagging
             (async () => {
               const mockComment = Math.random() > 0.5 ? 'Get the organic one!' : undefined;
               const [mockCategory, mockTags] = await Promise.all([
@@ -475,7 +449,6 @@ export const useStore = create<AppState>()(
                 ),
               }));
               
-              // Sometimes add a comment from another user
               if (Math.random() > 0.6) {
                 const commentUser = get().mockUsers.filter(u => u.id !== randomUser.id)[Math.floor(Math.random() * (get().mockUsers.length - 1))];
                 const comments = [
@@ -552,7 +525,6 @@ export const useStore = create<AppState>()(
         }));
       },
       
-      // Item Comments
       itemComments: [],
       
       addItemComment: (itemId, text) => {
@@ -574,7 +546,6 @@ export const useStore = create<AppState>()(
         return get().itemComments.filter(c => c.itemId === itemId);
       },
       
-      // Chat
       chatMessages: [],
       
       sendMessage: (message) => {
@@ -596,7 +567,6 @@ export const useStore = create<AppState>()(
           chatMessages: [...state.chatMessages, newMessage],
         }));
         
-        // Simulate responses from other family members (only in demo mode)
         if (get().isDemoMode && get().mockUsers.length > 0) {
           setTimeout(() => {
             const responses = [
@@ -626,7 +596,6 @@ export const useStore = create<AppState>()(
         }
       },
       
-      // Mock users
       mockUsers: [],
     }),
     {

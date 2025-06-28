@@ -6,7 +6,6 @@ export const AppLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Determine active tab based on current path
   const getActiveTab = (): 'list' | 'family' | 'chat' => {
     if (location.pathname.includes('/chat')) return 'chat';
     if (location.pathname.includes('/family')) return 'family';

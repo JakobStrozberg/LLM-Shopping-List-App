@@ -51,7 +51,6 @@ export const ShoppingList: React.FC = () => {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(GROCERY_CATEGORIES));
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
   
-  // New list creation state
   const [newListName, setNewListName] = useState('');
   const [selectedIcon, setSelectedIcon] = useState(LIST_ICONS[0]);
   const [selectedColor, setSelectedColor] = useState(LIST_COLORS[0].value);
@@ -60,7 +59,6 @@ export const ShoppingList: React.FC = () => {
   const uncheckedItems = currentItems.filter(item => !item.checked);
   const checkedItems = currentItems.filter(item => item.checked);
   
-  // Group items by category
   const groupedUncheckedItems = sortByCategory 
     ? GROCERY_CATEGORIES.reduce((acc, category) => {
         const items = uncheckedItems.filter(item => item.category === category);
@@ -334,7 +332,6 @@ export const ShoppingList: React.FC = () => {
         </form>
       )}
 
-      {/* Smart Suggestions */}
       {currentList && (
         <SmartSuggestions
           currentItems={uncheckedItems.map(item => item.name)}

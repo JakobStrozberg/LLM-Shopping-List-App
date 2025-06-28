@@ -1,7 +1,6 @@
 import { Product } from '../types';
 
 export const GROCERY_PRODUCTS: Product[] = [
-  // These are products with verified working images from the original CSV data
   { id: '20143381001', name: 'Roma Tomatoes', description: 'Fresh Roma tomatoes, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20143381001/b2/en/front/20143381001_front_a06_@2.png', tags: ['Fresh', 'Vegan', 'Low-Calorie'], points: 25 },
   { id: '20070132001', name: 'English Cucumber', description: 'Fresh English cucumber, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20070132001/b2/en/front/20070132001_front_a06_@2.png', tags: ['Fresh', 'Hydrating', 'Low-Carb'], points: 20 },
   { id: '20107500001', name: 'Green Onion', description: 'Fresh green onion bunch', image: 'https://assets.shop.loblaws.ca/products/20107500001/b2/en/front/20107500001_front_a06_@2.png', tags: ['Fresh', 'Flavorful', 'Organic'], points: 15 },
@@ -23,7 +22,6 @@ export const GROCERY_PRODUCTS: Product[] = [
   { id: '20083454001', name: 'Sweet Onion', description: 'Fresh sweet onions, sold by weight', image: 'https://assets.shop.loblaws.ca/products/20083454001/b2/en/front/20083454001_front_a06_@2.png' },
   { id: '20065036001', name: 'Romaine Lettuce', description: 'Fresh romaine lettuce head, 1 ea', image: 'https://assets.shop.loblaws.ca/products/20065036001/b2/en/front/20065036001_front_a06_@2.png' },
   
-  // Products without images (but still searchable)
   { id: 'milk-2', name: 'Milk 2%', description: 'Partly skimmed milk, 4L jug', brand: 'No Name', tags: ['Good Value', 'Low-Fat', 'Dairy'], points: 50 },
   { id: 'eggs', name: 'Large White Eggs', description: 'Large white eggs, 12 count', brand: 'No Name', tags: ['Good Value', 'High-Protein', 'Fresh'], points: 45 },
   { id: 'bread', name: 'White Bread', description: 'White sandwich bread, 675g loaf', brand: 'No Name', tags: ['Good Value', 'Pantry', 'Daily'], points: 40 },
@@ -101,7 +99,6 @@ export const GROCERY_PRODUCTS: Product[] = [
   { id: 'bleach', name: 'Bleach', description: 'Household bleach, 1.89L bottle', brand: 'No Name' }
 ];
 
-// Helper function to search products
 export function searchProducts(query: string, limit: number = 8): Product[] {
   const searchTerm = query.toLowerCase();
   return GROCERY_PRODUCTS
@@ -112,7 +109,6 @@ export function searchProducts(query: string, limit: number = 8): Product[] {
     )
     .map(product => ({
       ...product,
-      // Add default points based on brand if not specified
       points: product.points || (product.brand === 'No Name' ? 50 : 25)
     }))
     .slice(0, limit);

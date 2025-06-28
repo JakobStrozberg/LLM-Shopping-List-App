@@ -11,12 +11,49 @@ dist/
 *.tgz
 *.tar.gz
 
-# Environment variables
+# Environment variables and API keys
 .env
+.env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# API Keys and Secrets
+**/config/keys.js
+**/config/keys.ts
+**/*key*.json
+**/*secret*.json
+**/*credential*.json
+**/secrets/
+**/.secrets/
+
+# OpenAI API Keys
+OPENAI_API_KEY
+REACT_APP_OPENAI_API_KEY
+
+# Database credentials
+database.json
+config/database.yml
+
+# Authentication tokens
+auth_token.txt
+access_token.txt
+refresh_token.txt
+
+# Additional sensitive files
+*.pem
+*.crt
+*.cer
+*.p12
+*.pfx
+config.json
+secrets.json
+
+# Example files are OK to commit, but not the actual files
+!*.example
+!*.sample
+!*.template
 
 # IDE and editor files
 .vscode/
@@ -107,8 +144,19 @@ temp/
 *.p8
 *.p12
 *.key
+*.keystore
 *.mobileprovision
 *.orig.*
+
+# Xcode environment files
+**/.xcode.env
+**/.xcode.env.local
+
+# Firebase config files
+firebase.json
+.firebaserc
+**/google-services.json
+**/GoogleService-Info.plist
 
 # Metro
 .metro-health-check*

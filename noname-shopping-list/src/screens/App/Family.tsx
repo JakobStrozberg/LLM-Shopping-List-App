@@ -3,7 +3,6 @@ import { useStore } from '../../store';
 import { Trophy, Copy, Users, LogOut, Gift, Star, TrendingUp } from 'lucide-react';
 import { FamilyReward } from '../../types';
 
-// Mock rewards data
 const FAMILY_REWARDS: FamilyReward[] = [
   {
     id: '1',
@@ -32,11 +31,9 @@ export const Family: React.FC = () => {
   const { currentFamily, currentUser, mockUsers, logout } = useStore();
 
   const familyMembers = currentFamily?.members.map(memberId => {
-    // Check if it's the current user first
     if (memberId === currentUser?.id) {
       return currentUser;
     }
-    // Then check in mockUsers
     return mockUsers.find(user => user.id === memberId) || 
       { id: memberId, name: 'Unknown', avatar: '👤', email: '' };
   }) || [];
@@ -44,7 +41,6 @@ export const Family: React.FC = () => {
   const copyInviteCode = () => {
     if (currentFamily?.inviteCode) {
       navigator.clipboard.writeText(currentFamily.inviteCode);
-      // In a real app, show a toast notification
       alert('Invite code copied!');
     }
   };
@@ -55,7 +51,6 @@ export const Family: React.FC = () => {
     }
   };
 
-  // Calculate progress to next reward
   const currentPoints = currentFamily?.totalPoints || 0;
   const nextReward = FAMILY_REWARDS.find(reward => reward.pointsRequired > currentPoints) || FAMILY_REWARDS[0];
   const progressPercentage = nextReward ? (currentPoints / nextReward.pointsRequired) * 100 : 100;
@@ -63,7 +58,6 @@ export const Family: React.FC = () => {
 
   return (
     <div className="family-screen">
-      {/* Modern Hero Section with Progress */}
       <div className="rewards-hero">
         <div className="rewards-hero-content">
           <h2 className="rewards-title">Family Rewards</h2>
@@ -79,7 +73,6 @@ export const Family: React.FC = () => {
         </div>
       </div>
 
-      {/* Next Reward Progress Card */}
       <div className="next-reward-card">
         <div className="reward-progress-header">
           <h3>Next Reward</h3>
@@ -112,7 +105,6 @@ export const Family: React.FC = () => {
         </div>
       </div>
 
-      {/* All Rewards Grid */}
       <div className="rewards-section">
         <h3 className="section-title">
           <Gift size={20} />
@@ -156,7 +148,6 @@ export const Family: React.FC = () => {
         </div>
       </div>
 
-      {/* Family Info Section */}
       <div className="family-info-section">
         <div className="family-header-modern">
           <div>
@@ -178,7 +169,6 @@ export const Family: React.FC = () => {
           </div>
         </div>
 
-        {/* Members List */}
         <div className="members-section-modern">
           <h4 className="section-subtitle">
             <Users size={18} />
@@ -200,7 +190,6 @@ export const Family: React.FC = () => {
         </div>
       </div>
 
-      {/* Logout Button */}
       <div className="logout-section">
         <button onClick={handleLogout} className="btn-logout">
           <LogOut size={18} />

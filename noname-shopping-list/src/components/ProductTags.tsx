@@ -21,27 +21,22 @@ export const ProductTags: React.FC<ProductTagsProps> = ({
   const getTagColor = (tag: string): string => {
     const tagLower = tag.toLowerCase();
     
-    // Health and dietary tags - green tones
     if (/organic|vegan|gluten-free|dairy-free|low-fat|lean|high-fiber|keto/i.test(tagLower)) {
       return '#4CAF50';
     }
     
-    // Value proposition - blue tones
     if (/good value|budget|premium|quality/i.test(tagLower)) {
       return '#2196F3';
     }
     
-    // Convenience - orange tones
     if (/fresh|quick-prep|ready|frozen|instant/i.test(tagLower)) {
       return '#FF9800';
     }
     
-    // Protein and nutrients - purple tones
     if (/high-protein|protein|nutrient|vitamin/i.test(tagLower)) {
       return '#9C27B0';
     }
     
-    // Default - gray
     return '#757575';
   };
 

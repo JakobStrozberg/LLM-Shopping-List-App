@@ -16,7 +16,6 @@ export const FamilySetup: React.FC = () => {
     e.preventDefault();
     if (familyName.trim()) {
       setIsLoading(true);
-      // Simulate async operation
       setTimeout(() => {
         createFamily(familyName);
         navigate('/app/shopping');
@@ -30,7 +29,6 @@ export const FamilySetup: React.FC = () => {
       setIsLoading(true);
       setError('');
       
-      // Simulate async operation
       setTimeout(() => {
         const success = joinFamily(inviteCode.toUpperCase());
         if (success) {

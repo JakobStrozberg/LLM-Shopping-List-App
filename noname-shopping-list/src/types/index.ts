@@ -9,7 +9,7 @@ export interface User {
 export interface Family {
   id: string;
   name: string;
-  members: string[]; // user IDs
+  members: string[];
   inviteCode: string;
   totalPoints: number;
   createdAt: Date;
@@ -21,25 +21,25 @@ export interface ShoppingItem {
   comment?: string;
   image?: string;
   quantity: number;
-  addedBy: string; // user ID
+  addedBy: string;
   addedByName: string;
   addedByAvatar: string;
-  likedBy: string[]; // user IDs
+  likedBy: string[];
   checked: boolean;
   createdAt: Date;
   updatedAt: Date;
-  listId: string; // Adding list reference
-  category?: string; // Grocery category
-  tags?: string[]; // AI-generated tags for the item
-  points?: number; // Points earned for this item
+  listId: string;
+  category?: string;
+  tags?: string[];
+  points?: number;
 }
 
 export interface ShoppingList {
   id: string;
   name: string;
   familyId: string;
-  color: string; // For visual distinction
-  icon: string; // Emoji icon
+  color: string;
+  icon: string;
   createdBy: string;
   createdAt: Date;
   itemCount: number;
@@ -71,8 +71,8 @@ export interface Product {
   description: string;
   image?: string;
   brand?: string;
-  tags?: string[]; // AI-generated tags like "Good value", "Vegan", "Organic"
-  points?: number; // Points earned for purchasing this product
+  tags?: string[];
+  points?: number;
 }
 
 export interface FamilyReward {

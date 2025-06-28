@@ -1,5 +1,3 @@
-// OpenAI Configuration
-// Please set the REACT_APP_OPENAI_API_KEY environment variable in your .env file
 
 export const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || '';
 

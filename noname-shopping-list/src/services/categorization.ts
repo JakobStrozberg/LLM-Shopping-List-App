@@ -2,7 +2,6 @@ import { OPENAI_API_KEY, GROCERY_CATEGORIES, GroceryCategory } from '../config/o
 import { Product } from '../types';
 import { GROCERY_PRODUCTS } from '../data/products';
 
-// Log API key status at module initialization
 console.log('🔑 OpenAI API Key Configuration:');
 console.log('   - Key present:', !!OPENAI_API_KEY);
 console.log('   - Key length:', OPENAI_API_KEY?.length || 0);
@@ -97,62 +96,50 @@ export class CategorizationService {
   private static fallbackCategorization(item: string): GroceryCategory {
     const itemLower = item.toLowerCase();
     
-    // Produce
     if (/apple|banana|orange|grape|berry|fruit|vegetable|carrot|lettuce|tomato|potato|onion|pepper|broccoli|spinach|kale/i.test(itemLower)) {
       return 'Produce';
     }
     
-    // Dairy
     if (/milk|cheese|yogurt|butter|cream|dairy|egg/i.test(itemLower)) {
       return 'Dairy';
     }
     
-    // Meat & Seafood
     if (/meat|chicken|beef|pork|fish|salmon|tuna|shrimp|turkey|bacon|sausage/i.test(itemLower)) {
       return 'Meat & Seafood';
     }
     
-    // Bakery
     if (/bread|bagel|muffin|cake|cookie|pastry|donut|croissant/i.test(itemLower)) {
       return 'Bakery';
     }
     
-    // Frozen
     if (/frozen|ice cream|pizza/i.test(itemLower)) {
       return 'Frozen';
     }
     
-    // Beverages
     if (/water|juice|soda|coffee|tea|drink|beverage|wine|beer/i.test(itemLower)) {
       return 'Beverages';
     }
     
-    // Snacks
     if (/chip|snack|candy|chocolate|popcorn|pretzel|cracker/i.test(itemLower)) {
       return 'Snacks & Candy';
     }
     
-    // Household
     if (/paper|towel|tissue|cleaner|detergent|soap|shampoo|toothpaste/i.test(itemLower)) {
       return 'Household';
     }
     
-    // Health & Beauty
     if (/medicine|vitamin|lotion|makeup|deodorant/i.test(itemLower)) {
       return 'Health & Beauty';
     }
     
-    // Baby
     if (/diaper|formula|baby/i.test(itemLower)) {
       return 'Baby';
     }
     
-    // Pet
     if (/dog|cat|pet|food/i.test(itemLower) && /pet|dog|cat/i.test(itemLower)) {
       return 'Pet';
     }
     
-    // Pantry (default for many items)
     if (/rice|pasta|bean|can|sauce|oil|flour|sugar|salt|spice/i.test(itemLower)) {
       return 'Pantry & Dry Goods';
     }
@@ -266,7 +253,6 @@ export class ProductSuggestionService {
     const currentItemsLower = currentItems.map(item => item.toLowerCase());
     const recommendations: ProductRecommendation[] = [];
     
-    // Define common product associations
     const associations: { [key: string]: { products: string[], reason: string }[] } = {
       'ketchup': [
         { products: ['mustard', 'mayonnaise'], reason: 'Classic condiment trio' },
@@ -302,7 +288,6 @@ export class ProductSuggestionService {
       ]
     };
 
-    // Find associations for current items
     for (const currentItem of currentItemsLower) {
       for (const [key, assocList] of Object.entries(associations)) {
         if (currentItem.includes(key) || key.includes(currentItem)) {
@@ -329,7 +314,6 @@ export class ProductSuggestionService {
       }
     }
 
-    // Remove duplicates and return limited results
     const uniqueRecommendations = recommendations.filter((rec, index, self) => 
       index === self.findIndex(r => r.product.id === rec.product.id)
     );
@@ -507,64 +491,51 @@ export class TaggingService {
     const brandName = (brand || '').toLowerCase();
     const tags: string[] = [];
 
-    // No Name brand products get "Good Value" tag
     if (brandName.includes('no name')) {
       tags.push('Good Value');
     }
 
-    // Fresh produce tags
     if (/tomato|lettuce|cucumber|pepper|onion|carrot|broccoli|spinach|kale|avocado|apple|banana|orange|fruit|vegetable/i.test(name)) {
       tags.push('Fresh');
-      if (Math.random() > 0.5) tags.push('Organic'); // Randomly add organic for realism
+      if (Math.random() > 0.5) tags.push('Organic');
     }
 
-    // Dairy products (these are NOT dairy-free or vegan)
     if (/milk|cheese|yogurt|butter|cream/i.test(name)) {
       tags.push('Dairy');
       if (name.includes('2%') || name.includes('low') || name.includes('skim')) tags.push('Low-Fat');
-      // Explicitly NOT adding dairy-free or vegan tags here
     }
 
-    // Meat products (these are NOT vegan)
     if (/chicken|beef|pork|turkey|salmon|fish|meat|bacon|ham|sausage/i.test(name)) {
       tags.push('High-Protein');
       if (desc.includes('lean') || name.includes('lean')) tags.push('Lean');
-      // Explicitly NOT adding vegan tags here
     }
 
-    // Healthy options
     if (/whole|grain|fiber|oat|quinoa/i.test(name + desc)) {
       tags.push('High-Fiber');
     }
 
-    // Convenience foods
     if (/frozen|canned|ready|instant|quick/i.test(name + desc)) {
       tags.push('Quick-Prep');
     }
 
-    // Vegan-friendly items (ONLY items that are actually vegan)
     if (/^(vegetable|fruit|rice|pasta|oil|vinegar|bean|lentil|apple|banana|orange|tomato|lettuce|carrot|broccoli|spinach)$/i.test(name.trim()) && 
         !/cheese|milk|meat|fish|chicken|beef|dairy|butter|cream|yogurt|bacon|ham|sausage|egg/i.test(name + desc)) {
       tags.push('Vegan');
     }
 
-    // Gluten-free items (only naturally gluten-free items)
     if (/^(rice|potato|corn|apple|banana|orange|tomato|lettuce|carrot|meat|fish|chicken|beef|milk|cheese)$/i.test(name.trim()) && 
         !/bread|pasta|flour|wheat|gluten|barley|rye/i.test(name + desc)) {
-      if (Math.random() > 0.7) tags.push('Gluten-Free'); // Only sometimes for realism
+      if (Math.random() > 0.7) tags.push('Gluten-Free');
     }
 
-    // Premium/Quality indicators
     if (/organic|artisan|premium|gourmet|farm|local/i.test(name + desc)) {
       tags.push('Premium');
     }
 
-    // Return 2-4 tags
     if (tags.length > 4) {
       return tags.slice(0, 4);
     }
     
-    // Add generic tags if we have too few
     if (tags.length < 2) {
       const genericTags = ['Quality', 'Popular', 'Essential'];
       tags.push(...genericTags.slice(0, 2 - tags.length));
@@ -574,7 +545,6 @@ export class TaggingService {
   }
 }
 
-// Test function to verify tagging accuracy
 export async function testTagging() {
   console.log('🧪 Testing improved tagging system...');
   

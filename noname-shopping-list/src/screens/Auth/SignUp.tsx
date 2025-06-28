@@ -28,7 +28,6 @@ export const SignUp: React.FC = () => {
   };
 
   const handleAppleSignIn = () => {
-    // Mock Apple Sign In
     const newUser: User = {
       id: uuidv4(),
       email: 'apple.user@icloud.com',
@@ -54,7 +53,6 @@ export const SignUp: React.FC = () => {
               alt="No Name Brand" 
               className="logo-image"
               onError={(e) => {
-                // Fallback to emoji if image fails to load
                 e.currentTarget.style.display = 'none';
                 e.currentTarget.parentElement?.classList.add('logo-fallback');
               }}
