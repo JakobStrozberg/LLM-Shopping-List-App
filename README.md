@@ -6,12 +6,12 @@ A collaborative family shopping list app that helps families shop together, shar
 
 ## Features
 
-- 👨‍👩‍👧‍👦 **Family Sharing**: Create and share shopping lists with up to 5 family members
-- 🤖 **Smart Suggestions**: AI-powered product recommendations based on your current list
-- 🏆 **Rewards System**: Earn points for No Name products and unlock family rewards
-- 📱 **Cross-Platform**: Web app with React Native mobile companion
-- 💬 **Collaboration**: Add comments and reactions to shared items
-- 🏪 **Store Organization**: Items automatically categorized by store sections
+-  **Family Sharing**: Create and share shopping lists with up to 5 family members
+-  **Smart Suggestions**: AI-powered product recommendations based on your current list
+-  **Rewards System**: Earn points for No Name products and unlock family rewards
+-  **Cross-Platform**: Web app with React Native mobile companion
+-  **Collaboration**: Add comments and reactions to shared items
+-  **Store Organization**: Items automatically categorized by store sections
 
 ## Screenshots
 
@@ -97,10 +97,10 @@ NoNameiOS/                   # React Native mobile app
 
 This repository is configured to safely exclude all sensitive information:
 
-- ✅ All `.env*` files are gitignored
-- ✅ API keys and secrets are excluded
-- ✅ Firebase configuration files are ignored
-- ✅ Mobile app certificates and keys are excluded
+-  All `.env*` files are gitignored
+-  API keys and secrets are excluded
+-  Firebase configuration files are ignored
+-  Mobile app certificates and keys are excluded
 
 ### Required API Keys (Optional)
 
@@ -112,7 +112,6 @@ This repository is configured to safely exclude all sensitive information:
    - Create project at [Firebase Console](https://console.firebase.google.com/)
    - Add configuration to `.env`
 
-## Development
 
 ### Technologies Used
 
@@ -122,14 +121,6 @@ This repository is configured to safely exclude all sensitive information:
 - **Icons**: Lucide React
 - **AI Services**: OpenAI GPT-3.5
 - **Build Tool**: Create React App
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
 ## License
 
