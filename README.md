@@ -3,6 +3,7 @@
 A collaborative family shopping list app that helps families shop together, share lists, and earn rewards for purchasing No Name brand products.
 
 <img width="198" alt="Screenshot 2025-06-28 at 12 56 22 PM" src="https://github.com/user-attachments/assets/08a8261b-9259-4b24-a2b3-2343cd793d60" />
+
 ## Features
 
 - 👨‍👩‍👧‍👦 **Family Sharing**: Create and share shopping lists with up to 5 family members
